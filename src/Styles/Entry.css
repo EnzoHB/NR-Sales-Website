@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
+
+.entry {
+    background: radial-gradient(185.83% 185.83% at 50% 50%, #F3F3F3 0%, #CBCBCB 100%);
+    filter: drop-shadow(0px 4px 1px rgba(0, 0, 0, 0.2));
+
+    font-family: 'Secular One', sans-serif;
+
+    padding: 0 20px;
+    border-radius: 20px;
+    width: min-content;
+
+    display: flex;
+    flex-direction: column;
+    align-content: flex-start;
+    justify-content: space-between;
+}
+
+.entry > .body {
+    display: flex;
+    flex-wrap: nowrap;
+    height: 50px;
+    gap: 10px;
+}
+
+.entry > .body > .indicator {
+    color: white;
+    padding: 2px 12.5px;
+    border-radius: 10px;
+    height: fit-content;;
+}
+
+.entry > .body >.text {
+    height: inherit;
+    color: #aeaeae;
+    width: max-content;
+}
+
+.entry > .body > .button {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.entry > .body > .button > .c {
+    --pixels: 4px;
+    width: var(--pixels);
+    height: var(--pixels);
+    border-radius: calc(var(--pixels) / 2);
+    background-color: #aeaeae;
+}
+
+.entry > .body > .button > .i {
+    --width: 4px;
+    --height: 8px;
+    width: var(--width);
+    height: var(--height);
+    border-radius: calc(var(--height) / 2);
+    background-color: #aeaeae;
+}

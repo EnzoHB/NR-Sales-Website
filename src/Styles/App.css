@@ -1,0 +1,21 @@
+.ledger {
+    display: flex;
+    flex-direction: column-reverse;
+    flex-wrap: nowrap;
+    gap: 5px;
+}
+
+body {
+    background: rgb(255, 241, 241)
+}
+
+.centralize { 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hide {
+    visibility: hidden;
+    position: absolute;
+}

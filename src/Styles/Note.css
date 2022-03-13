@@ -1,0 +1,98 @@
+:root {
+    --table-round: 10px;
+}
+
+.note {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 0 5px 0;
+}
+
+.note > .title {
+    color: #797979;
+    width: 100%;
+    font-size: 16px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.note > .title > hr {
+    height: 0;
+    width: 100%;
+}
+
+.note > .title > .header {
+    padding: 0 10px;
+}
+
+.note > .content {
+    text-align: justify;
+    color: #AEAEAE;
+    font-size: 12px;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+.note > .name {
+    color: #797979;
+    font-size: 12px;
+}
+
+.note > .total {
+    font-size: 12px;
+    color: #AEAEAE;
+}
+
+.note > .table {
+    width: 100%;
+    font-size: 12px;
+    padding: 10px 0;
+}
+
+.note > .table > table {
+    width: inherit;
+    border-collapse: collapse;
+    text-align: center;
+    color: #AEAEAE;
+    table-layout: fixed;
+}
+
+.note > .table > table > thead {
+    color: #797979;
+    letter-spacing: 1.2px;
+    
+}
+
+
+.note > .table > table > thead > tr > th {
+    padding: 5px;
+}
+
+.note > .table > table > tbody > tr> td {
+    padding: 6px;
+}
+
+
+.table table thead tr:first-child th:first-child {
+    border-top-left-radius: var(--table-round)
+}
+
+.table table thead tr:first-child th:last-child {
+    border-top-right-radius: var(--table-round)
+}
+
+.table table tr:last-child td:first-child {
+    border-bottom-left-radius: var(--table-round)
+}
+
+.table table tr:last-child td:last-child {
+    border-bottom-right-radius: var(--table-round)
+}
+
+.note > hr {
+    height: 0;
+    width: 100%
+}
