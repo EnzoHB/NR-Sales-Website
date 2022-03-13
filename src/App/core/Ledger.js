@@ -3,6 +3,7 @@ import { Store } from "../classes/Store.js";
 import { Entry } from "../classes/helper/Entry.js";
 import { Receipt } from '../classes/helper/Receipt.js';
 import { Profit } from "../classes/Profit.js";
+import { ledger } from "../init.js";
 
 class Ledger {
     constructor(name) {
@@ -261,6 +262,17 @@ class Ledger {
         };
 
         return { get };
+    };
+
+    get fetch() {
+    
+        var some  = props => this.history.filter(entry => Object.entries(props).some (([key, filter]) => entry[key] === filter(entry)))
+        var every = props => this.history.filter(entry => Object.entries(props).every(([key, filter]) => entry[key] === filter(entry)))
+
+        return {
+            some,
+            every
+        }
     };
 };
 

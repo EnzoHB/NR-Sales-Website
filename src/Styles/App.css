@@ -1,12 +1,14 @@
 .ledger {
     display: flex;
+    width: max-content;
     flex-direction: column-reverse;
     flex-wrap: nowrap;
-    gap: 5px;
+    justify-content: center;
+    gap: 7.5px;
 }
 
 body {
-    background: rgb(255, 241, 241)
+    background: rgb(202, 202, 202)
 }
 
 .centralize { 
