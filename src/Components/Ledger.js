@@ -15,28 +15,28 @@ function Ledger({ width, focus, items, shortForm, noteVisibility }) {
     var [ shortForm, setShortForm] = useState(shortForm); 
     var [ noteVisibility, setNoteVisiblity] = useState(noteVisibility);
 
-    const handleTextChange = event => setFocus(event.target.value);
+    var timeout;
+
+    const handleTextChange = event => {
+        clearTimeout(timeout);
+
+        timeout = setTimeout(() => (
+            setFocus(event.target.value), 
+            clearTimeout(timeout)), 150);
+    }
+
     const handleShortFormClick = event => setShortForm(event.target.checked)
     const handleNoteVisiblityClick = event => setNoteVisiblity(event.target.checked);
 
-    function handleLoad(event) {
-        console.log('Enzo')
-        event.target.scrollTo({
-            top: 0,
-            left: 0,
-            behavior: 'smooth'
-        });
-    };
-
     return (
         <>
-        <div style={{ width }}>
+        <div style={{ width, backgroundColor: '#f4f4f4' }}>
             <div className='controls'>
                 <TextField id="standard-basic" label="Focus" variant="standard" onChange={handleTextChange} defaultValue={focus}/>
                 <FormControlLabel control={<Checkbox onChange={handleShortFormClick}/>} label="Short Form" />
                 <FormControlLabel control={<Checkbox onChange={handleNoteVisiblityClick}/>} label="Show Notes" />
             </div>
-            <div className='ledger' onLoad={handleLoad}>
+            <div className='ledger'>
                 {items.map(({ id, subject, operation, target, amount, note }) => (
                     <Entry 
                         key={nanoid()}
