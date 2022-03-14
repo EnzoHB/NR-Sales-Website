@@ -25,7 +25,7 @@ ledger.get('Julia').to('Caixa').lend(69).reason('Banners and A4 Plastifications.
 ledger.stores.get('Papelaria Criativa').buyer('Caixa').cart('Impressions and Plastifications').item('Impressão A3 Colorida').price(2.5).amount(6).item('Impressão A4 Colorida').price(1).amount(15).item('Plastificação A3').price(6).amount(6).item('Plastificação A4').price(3).amount(1).pay();
 
 // 10/03
-ledger.get('Enzo').to('Caixa').lend(224.5).reason('The money needed to buy the pizzas')
+ledger.get('Enzo').to('Caixa').lend(244.5).reason('The money needed to buy the pizzas');
 
 // 11 / 03
 ledger.stores.get('Pizzaria Specialle').buyer('Caixa').cart('Purchase of the products').item('Presunto e Queijo').price(2).amount(350).pay();
@@ -36,9 +36,6 @@ ledger.get('Luísa').to('Caixa').lend(50).reason('Lending the money for those pu
 ledger.get('Caixa').to('Enzo').pay(50).reason('He couldn\'t pay for everything as he had already lent the money for the purchase of the pizzas')
 ledger.get('Enzo').to('Caixa').donate(13.55).reason('Donating coins for extra change as we are gonna need for the sales on march 14th')
 ledger.profit.get('Minipizzas').seller('Caixa').sale('Venda da minipizzas').item('Presunto e Queijo').price(5).amount(206).item('Frete de Entrega').price(20).amount(1).close();
-//ledger.get('Enzo').to('Caixa').lend(200).reason('Purchase and transportation of the minipizzas');
-//ledger.get('Luísa').to('Caixa').lend(60).reason('Napkins and change. Payment Date: 18/03');
-//ledger.get('Enzo').to('Caixa').lend(200).reason('Purchase and transportation of the minipizzas');
 
 
 // ----------------- Physical Money Management ------------------------ //
