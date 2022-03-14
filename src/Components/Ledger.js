@@ -1,59 +1,64 @@
-import React, { createRef, useEffect, useState, useRef, Component } from 'react';
+import React, { useRef, useState } from 'react';
 import Entry from './Entry.js';
-import '../Styles/Entry.css';
-import '../Styles/Note.css';
-import { ledger } from '../App/ledger.js'
+import '../Styles/Ledger.css';
+
+import { Checkbox, TextField, FormGroup, FormControlLabel } from '@mui/material';
 import { nanoid } from 'nanoid';
 
-const FOCUS = 'Caixa';
-const DEFAULT_NOTE_VISIBILITY = true;
 
-const index = ledger.history.length - 1;
-const sample = [ ledger.history[index] ];
+function Ledger({ width, focus, items, shortForm, noteVisibility }) {
 
-function Ledger(props) {
-    const t = true;
-    const f = false;
-    const style = {
-        display: 'flex',
-        width: '500px',
-        flexWrap: 'wrap',
-    }
+    var [ width, setWidth ] = useState(width);
+    var [ items, setItems ] = useState(items) 
+    var [ focus, setFocus ] = useState(focus);
 
-    const [ focus, setFocus ] = useState(FOCUS);
-    const [ shortForm, setShortForm ] = useState(false);
-    const [ defaultNoteVisibility, setDefaultNoteVisibility ] = useState(DEFAULT_NOTE_VISIBILITY);
+    var [ shortForm, setShortForm] = useState(shortForm); 
+    var [ noteVisibility, setNoteVisiblity] = useState(noteVisibility);
+
+    const handleTextChange = event => setFocus(event.target.value);
+    const handleShortFormClick = event => setShortForm(event.target.checked)
+    const handleNoteVisiblityClick = event => setNoteVisiblity(event.target.checked);
+
+    function handleLoad(event) {
+        console.log('Enzo')
+        event.target.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'smooth'
+        });
+    };
 
     return (
         <>
-        <div style={style}>
-            <Input legend='Focus' placeholder={focus} onChange={setFocus}/>
-            <Input legend='Short Form' placeholder={shortForm} onChange={setShortForm}/>
-            <Input legend='Note Visiblity' placeholder={`${defaultNoteVisibility}`} onChange={setDefaultNoteVisibility}/>
-        </div>
-        <br/>
-        <br/>
-        <div className='ledger'>
-            {ledger.history.map(({ subject, operation, target, amount, note }) => (
-                <Entry 
-                    key={nanoid()}
-                    shortForm={shortForm}
-                    focus={focus}
-                    note={note}
-                    amount={amount}
-                    target={target}
-                    subject={subject}
-                    isVisible={focus == subject || focus == target}
-                    operation={operation}
-                    isNoteVisible={defaultNoteVisibility}
-                />
-                ) 
-            )}
+        <div style={{ width }}>
+            <div className='controls'>
+                <TextField id="standard-basic" label="Focus" variant="standard" onChange={handleTextChange} defaultValue={focus}/>
+                <FormControlLabel control={<Checkbox onChange={handleShortFormClick}/>} label="Short Form" />
+                <FormControlLabel control={<Checkbox onChange={handleNoteVisiblityClick}/>} label="Show Notes" />
+            </div>
+            <div className='ledger' onLoad={handleLoad}>
+                {items.map(({ id, subject, operation, target, amount, note }) => (
+                    <Entry 
+                        key={nanoid()}
+                        shortForm={shortForm}
+                        focus={focus}
+                        note={note}
+                        amount={amount}
+                        target={target}
+                        subject={subject}
+                        isVisible={focus == subject || focus == target}
+                        operation={operation}
+                        isNoteVisible={noteVisibility}
+                    />
+                    )
+                ).reverse()}
+            </div>
         </div>
         </>
     );
 }
 
+/*
 function Input({ legend, placeholder, onChange }) {
     const style = {
         width: 'fit-content',
@@ -78,6 +83,8 @@ function Input({ legend, placeholder, onChange }) {
         </fieldset>
     );
 };
+
+*/
 
 export default Ledger;
   

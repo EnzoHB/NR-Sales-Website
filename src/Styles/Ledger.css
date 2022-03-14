@@ -1,0 +1,53 @@
+:root {
+    --background: #f4f4f4;
+    --fonts: #5c5c5c;
+    --color: #aeaeae;
+    --buttonLength: 20px;
+    --indicatorsRadius: 5px;
+    --buttonWidth: 4px;
+    --buttonHeight: 8px;
+    --padding: 15px;
+    --main: 20px;
+    --title: 18px;
+    --note: 16px;
+    --minimum-indicators-width: 175px;
+    --direction: row;
+}
+
+.ledger {
+    display: flex;
+    width: inherit;
+    height: 400px;
+    overflow: scroll;
+    overflow-x: hidden;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 0px;
+}
+
+/* width */
+.ledger::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+.ledger::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+   
+/* Handle */
+.ledger::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+  
+/* Handle on hover */
+.ledger::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+
+.controls {
+    padding: var(--padding);
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--background);
+}

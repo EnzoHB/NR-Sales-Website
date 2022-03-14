@@ -1,14 +1,6 @@
-.ledger {
-    display: flex;
-    width: max-content;
-    flex-direction: column-reverse;
-    flex-wrap: nowrap;
-    justify-content: center;
-    gap: 7.5px;
-}
-
 body {
-    background: rgb(202, 202, 202)
+    background: rgb(202, 202, 202);
+    overflow: hidden;
 }
 
 .centralize { 
@@ -20,4 +12,8 @@ body {
 .hide {
     visibility: hidden;
     position: absolute;
+}
+
+.alone {
+    width: min-content;
 }
