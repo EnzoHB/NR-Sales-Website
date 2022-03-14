@@ -17,8 +17,8 @@ ledger.profit.get('Juju').seller('Caixa').sale('Vendas de Juju').item('Chocolate
 ledger.get('Caixa').to('João Lucas').pay(20).reason('Money lending of R$20');
 ledger.get('Caixa').to('Enzo').pay(10).reason('Money lending of R$13');
 ledger.get('Caixa').to('Luísa').pay(60).reason('Money lending of R$60');
-ledger.many('João Lucas', 'Enzo', 'Julia', 'Eduardo', `Luísa`, 'Rian').to('Doações').donate(10).reason('Everyone donates R$ 10,00 to the second investment')
-ledger.get('Doações').to('Caixa').donate(60).reason(`Everyone should have donated R$ 10,00 for the second investment, but some of them didn't. They include: João Pedro, Igor, Otto, Miguel, e Brandão`)
+ledger.many('João Lucas', 'Enzo', 'Julia', 'Eduardo', `Luísa`, 'Rian', 'Otto', 'Igor', 'Miguel').to('Doações').donate(10).reason('Everyone donates R$ 10,00 to the second investment')
+ledger.get('Doações').to('Caixa').donate(90).reason(`Everyone should have donated R$ 10,00 for the second investment, but some of them didn't. They include: João Pedro, Igor, Otto, Miguel, e Brandão`)
 ledger.get('João Lucas').to('Caixa').lend(57).reason('Buying cash register. Payment Date: 18/03');
 ledger.stores.get('Mercado Livre').buyer('Caixa').cart('Purchase of the cash register').item('Caixa Registradora').price(57).amount(1).pay();
 ledger.get('Julia').to('Caixa').lend(69).reason('Banners and A4 Plastifications. Payment Date 18:03');
@@ -35,11 +35,12 @@ ledger.stores.get('Supermercado São Luís').buyer('Caixa').cart('Purchase of na
 ledger.get('Luísa').to('Caixa').lend(50).reason('Lending the money for those purchases')
 ledger.get('Caixa').to('Enzo').pay(50).reason('He couldn\'t pay for everything as he had already lent the money for the purchase of the pizzas')
 ledger.get('Enzo').to('Caixa').donate(13.55).reason('Donating coins for extra change as we are gonna need for the sales on march 14th')
+ledger.profit.get('Minipizzas').seller('Caixa').sale('Venda da minipizzas').item('Presunto e Queijo').price(5).amount(206).item('Frete de Entrega').price(20).amount(1).close();
 //ledger.get('Enzo').to('Caixa').lend(200).reason('Purchase and transportation of the minipizzas');
 //ledger.get('Luísa').to('Caixa').lend(60).reason('Napkins and change. Payment Date: 18/03');
 //ledger.get('Enzo').to('Caixa').lend(200).reason('Purchase and transportation of the minipizzas');
 
-// 'João Lucas', 'Enzo', 'Julia', 'Eduardo'
+
 // ----------------- Physical Money Management ------------------------ //
 
 // Frist sale
@@ -82,6 +83,7 @@ treasure.get(0.010).add(0);
 export { ledger, donations, treasure }
 // Second donation
 
+console.log(JSON.stringify(ledger))
 console.dir(ledger, { depth: 10 })
 console.log(nanoid())
 

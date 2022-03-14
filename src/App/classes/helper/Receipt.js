@@ -1,4 +1,3 @@
-import { toHaveDisplayValue } from '@testing-library/jest-dom/dist/matchers';
 import { nanoid } from 'nanoid';
 
 class Receipt {

@@ -181,9 +181,6 @@ function Content({ string }) {
 };
 
 function Receipt({ receipt }) {
-
-    var locale = ['pt-br', {style: 'currency', currency: 'BRL'}];
-
     return (
         <>
             <div className='header'>
@@ -193,7 +190,7 @@ function Receipt({ receipt }) {
             </div>
             <div className='info'>
                 <div className='name'>{receipt.name}</div>
-                <div className='total'>Total: {Number(receipt.total).toLocaleString(...locale)}</div>
+                <div className='total'>Total: {Number(receipt.total).toLocaleString('pt-br', {style: 'currency', currency: 'BRL'})}</div>
                 <div className='table'>
                     <table>
                         <thead>
@@ -204,7 +201,7 @@ function Receipt({ receipt }) {
                             </tr>
                         </thead>
                         <tbody>
-                            {receipt.items.map(item => < TableRow key={nanoid()} item={item} locale={locale}/>)}
+                            {receipt.items.map(item => < TableRow key={nanoid()} item={item}/>)}
                         </tbody>
                     </table>
                 </div>
@@ -212,11 +209,11 @@ function Receipt({ receipt }) {
         </>
     )
 
-    function TableRow({ item, locale }) {
+    function TableRow({ item }) {
         return (
             <tr>
                 <td>{item.name}</td>
-                <td>{Number(item.price)?.toLocaleString(...locale)}</td>
+                <td>{Number(item.price)?.toLocaleString('pt-br', {style: 'currency', currency: 'BRL'})}</td>
                 <td>{item.amount} {item.amount > 1? 'Units': 'Unit'}</td>
             </tr>
         );

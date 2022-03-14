@@ -1,9 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import Entry from './Entry.js';
 import '../Styles/Ledger.css';
 
-import { Checkbox, TextField, FormGroup, FormControlLabel } from '@mui/material';
+import { Checkbox, TextField, FormControlLabel } from '@mui/material';
 import { nanoid } from 'nanoid';
+import { ledger } from '../App/init.js';
 
 
 function Ledger({ width, focus, items, shortForm, noteVisibility }) {
@@ -20,7 +21,7 @@ function Ledger({ width, focus, items, shortForm, noteVisibility }) {
     const handleTextChange = event => {
         clearTimeout(timeout);
 
-        timeout = setTimeout(() => (
+        timeout = setTimeout(() => ( 
             setFocus(event.target.value), 
             clearTimeout(timeout)), 150);
     }
@@ -46,7 +47,7 @@ function Ledger({ width, focus, items, shortForm, noteVisibility }) {
                         amount={amount}
                         target={target}
                         subject={subject}
-                        isVisible={focus == subject || focus == target}
+                        isVisible={focus === subject || focus === target}
                         operation={operation}
                         isNoteVisible={noteVisibility}
                     />
@@ -56,35 +57,6 @@ function Ledger({ width, focus, items, shortForm, noteVisibility }) {
         </div>
         </>
     );
-}
-
-/*
-function Input({ legend, placeholder, onChange }) {
-    const style = {
-        width: 'fit-content',
-        display: 'inline'
-    }
-    
-    var timeout;
-    const handleChange = event => {
-        if (timeout) return;
-
-        timeout = setTimeout(() => {
-            clearTimeout(timeout)
-            timeout = null;
-            onChange(event.target.value);
-        }, 50)
-    }
-
-    return (
-        <fieldset style={style}>
-            <legend>{legend}</legend>
-            <input placeholder={placeholder} onInput={handleChange}></input>
-        </fieldset>
-    );
 };
 
-*/
-
-export default Ledger;
-  
+export default ledger;
