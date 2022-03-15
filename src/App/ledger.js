@@ -46,7 +46,7 @@ treasure.put('Doação do Otto').type(5).amount(2).save();
 treasure.put('Vendas das Minipizzas').type(50).amount(5).type(20).amount(8).type(10).amount(31).type(5).amount(60).type(2).amount(58).type(1).amount(26).type(0.5).amount(33).type(0.25).amount(25).type(0.1).amount(19).type(0.05).amount(7).save()
 treasure.put('Marcações das Minipizzas').type(5).amount(50 - 4).save();
 
-export { ledger, donations, treasure }
+export { ledger, treasure }
 
 // 110.60
 

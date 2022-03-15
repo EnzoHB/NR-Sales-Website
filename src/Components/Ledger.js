@@ -4,6 +4,7 @@ import '../Styles/Ledger.css';
 
 import { Checkbox, TextField, FormControlLabel } from '@mui/material';
 import { nanoid } from 'nanoid';
+import { treasure } from '../App/ledger';
 
 function Ledger({ width, focus, items, shortForm, noteVisibility }) {
 
@@ -55,6 +56,9 @@ function Ledger({ width, focus, items, shortForm, noteVisibility }) {
             </div>
             </div>
             <div className='chart' style={{backgroundColor: '#f4f4f4'}}>
+                <div>
+                    Treasure<br/><br/>- Balance: ${treasure.balance}<br/>- Digital: ${treasure.digital}<br/>- Physical ${treasure.physical}
+                </div>
                 <Canvas items={items}/>
             </div>
         </div>
