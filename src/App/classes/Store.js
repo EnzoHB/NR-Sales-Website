@@ -25,7 +25,7 @@ class Store extends Person {
     };
 
     receipt(cart) {
-        this.receipts.set(cart.name, cart);
+        this.receipts.set(cart.name, cart.build());
     };
 };
 

@@ -24,7 +24,7 @@ class Profit extends Person {
     };
 
     receipt(receipt) {
-        this.sales.set(receipt.name, receipt);
+        this.sales.set(receipt.name, receipt.build());
     };
 };
 

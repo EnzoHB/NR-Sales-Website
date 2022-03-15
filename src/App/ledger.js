@@ -1,5 +1,6 @@
 import { ledger, treasure, donations, magic } from "./init.js";
 import { names } from './data.js'
+import { Treasure } from "./classes/Treasure.js";
 
 // ----------------- Transaction history Management ------------------------ //
 
@@ -30,7 +31,24 @@ ledger.stores.get('Supermercado São Luís').buyer('Caixa').cart('Purchase of na
 ledger.get('Luísa').to('Caixa').lend(50).reason('Lending the money for those purchases')
 ledger.get('Caixa').to('Enzo').pay(50).reason('He couldn\'t pay for everything as he had already lent the money for the purchase of the pizzas')
 ledger.get('Enzo').to('Caixa').donate(13.55).reason('Donating coins for extra change as we are gonna need for the sales on march 14th')
-ledger.profit.get('Minipizza').seller('Caixa').sale('Venda de Minipizzas').item('Minipizza').price(5).amount(350).item('Sobra').price(-5).amount(36).close();
+ledger.profit.get('Minipizza').seller('Caixa').sale('Venda de Minipizzas')
+.item('Minipizza').price(5).amount(350)
+.cuff('Otto').amount(6).payed(true)
+.cuff('Miguel').amount(2).payed(false)
+.cuff('Julia').amount(3).payed(false)
+.cuff('Enzo').amount(8).payed(true)
+.cuff('João Lucas').amount(12).payed(true)
+.cuff('Brandão').amount(1).payed(false)
+.cuff('Sérgio').amount(4).payed(true)
+.cuff('Tati').amount(6).payed(false)
+.cuff('Marcos').amount(1).payed(false)
+.cuff('Cíntia').amount(1).payed(false)
+.cuff('David').amount(2).payed(true)
+.cuff('Vanessa').amount(4).payed(false)
+.cuff('Ana Laura').amount(1).payed(false)
+.cuff('Ravi').amount(1).payed(false)
+.cuff('Júlia 9').amount(1).payed(false)
+.item('Sobra').price(-5).amount(38).close();
 
 //ledger.get('Caixa').to('Enzo').pay(250).reason('Money lent of R$ 250')
 //ledger.get('Caixa').to('Luísa').pay(50).reason('Money lent of R$ 50')
@@ -50,7 +68,7 @@ treasure.put('Marcações das Minipizzas')
 .type(10).amount(2)
 .type(1).amount(6)
 .type(2).amount(6)
-.type(5).amount(5)
+.type(5).amount(6)
 .type(2).amount(2)
 .save();
 
@@ -64,8 +82,9 @@ Treasure
 - Digital: ${treasure.digital}
 - Physical ${treasure.physical}
 `)
+
 console.log(treasure)
-console.dir(ledger, { depth: 10 })
+console.dir(ledger, { depth: 20 })
 
 
 //console.d(donations)

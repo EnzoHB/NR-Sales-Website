@@ -1,3 +1,4 @@
+import { unstable_composeClasses } from '@mui/material';
 import { nanoid } from 'nanoid';
 
 // Store Receipt
@@ -88,7 +89,7 @@ class ProfitReceipt {
         return {
             from: from => ({
                 amount: amount => ({
-                    payed: payed => this.cuffs.set(item, { item, from, amount, payed })
+                    payed: payed => this.cuffs.set(from, { item, from, amount, payed })
                 })
             })
         };
@@ -110,14 +111,14 @@ class ProfitReceipt {
         this.sales = items.reduce((acc, { price, amount }) => acc += price * amount, 0);
         this.pendent = cuffs.reduce((acc, { item, amount, payed }) => {
 
-            if (payed) return;
+            if (payed) return acc;
             var pendent = this.items.get(item).price * amount;
 
-            this.sales -= pendent; 
-            return acc += pendent;
+            this.sales -= Number(pendent); 
+            return acc += Number(pendent);
 
         }, 0);
-
+        
         return (
 
             this.items = items,
