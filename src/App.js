@@ -3,7 +3,7 @@ import Ledger from './Components/Ledger.js';
 import { ledger } from './App/ledger.js'
 
 function App() {
-  const width = '500px';
+  const width = '450px';
   const focus = 'Caixa';
   const shortForm = false;
   const noteVisibility = false;

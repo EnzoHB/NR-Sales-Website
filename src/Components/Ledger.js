@@ -30,7 +30,7 @@ function Ledger({ width, focus, items, shortForm, noteVisibility }) {
     return (
         <>
         <div style={{ width, backgroundColor: '#f4f4f4', display: 'flex' }}>
-            <div>
+            <div style={ { width } }>
             <div className='controls'>
                 <TextField id="standard-basic" label="Focus" variant="standard" onChange={handleTextChange} defaultValue={focus}/>
                 <FormControlLabel control={<Checkbox onChange={handleShortFormClick}/>} label="Short Form" />
