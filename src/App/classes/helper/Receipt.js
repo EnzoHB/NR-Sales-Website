@@ -1,5 +1,9 @@
 import { nanoid } from 'nanoid';
 
+// Store Receipt
+// Profit Receipt
+
+
 class Receipt {
     constructor(name, note) {
         this.id = nanoid();

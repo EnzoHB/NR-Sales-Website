@@ -1,6 +1,5 @@
 import { ledger, treasure, donations, magic } from "./init.js";
 import { names } from './data.js'
-import { nanoid } from 'nanoid'
 
 // ----------------- Transaction history Management ------------------------ //
 
@@ -17,72 +16,48 @@ ledger.profit.get('Juju').seller('Caixa').sale('Vendas de Juju').item('Chocolate
 ledger.get('Caixa').to('João Lucas').pay(20).reason('Money lending of R$20');
 ledger.get('Caixa').to('Enzo').pay(10).reason('Money lending of R$13');
 ledger.get('Caixa').to('Luísa').pay(60).reason('Money lending of R$60');
-ledger.many('João Lucas', 'Enzo', 'Julia', 'Eduardo', `Luísa`, 'Rian', 'Otto', 'Igor', 'Miguel').to('Doações').donate(10).reason('Everyone donates R$ 10,00 to the second investment')
-ledger.get('Doações').to('Caixa').donate(90).reason(`Everyone should have donated R$ 10,00 for the second investment, but some of them didn't. They include: João Pedro, Igor, Otto, Miguel, e Brandão`)
+ledger.many(...names.students).to('Doações').donate(10).reason('Everyone donates R$ 10,00 to the second investment')
+ledger.get('Doações').to('Caixa').donate(110).reason(`Everyone has donated R$ 10,00 for the second investment`)
 ledger.get('João Lucas').to('Caixa').lend(57).reason('Buying cash register. Payment Date: 18/03');
 ledger.stores.get('Mercado Livre').buyer('Caixa').cart('Purchase of the cash register').item('Caixa Registradora').price(57).amount(1).pay();
 ledger.get('Julia').to('Caixa').lend(69).reason('Banners and A4 Plastifications. Payment Date 18:03');
 ledger.stores.get('Papelaria Criativa').buyer('Caixa').cart('Impressions and Plastifications').item('Impressão A3 Colorida').price(2.5).amount(6).item('Impressão A4 Colorida').price(1).amount(15).item('Plastificação A3').price(6).amount(6).item('Plastificação A4').price(3).amount(1).pay();
-
-// 10/03
-ledger.get('Enzo').to('Caixa').lend(244.5).reason('The money needed to buy the pizzas');
-
-// 11 / 03
-ledger.stores.get('Pizzaria Specialle').buyer('Caixa').cart('Purchase of the products').item('Presunto e Queijo').price(2).amount(350).pay();
+ledger.get('Enzo').to('Caixa').lend(250).reason('The money needed to buy the pizzas')
+ledger.stores.get('Pizzaria Specialle').buyer('Caixa').cart('Purchase of the products').item('Presunto e Queijo').price(2).amount(350).tax(5.5).pay()
 ledger.get('Enzo').to('Caixa').lend(50).reason('Purchase of nakpins and change. Payment Date');
 ledger.stores.get('Papelaria Central').buyer('Caixa').cart('Purchase of of extra material').item('Tesoura').price(4.5).amount(1).item('Fita Adesiva').price(8.6).amount(1).item('Lápis').price(1.7).amount(1).item('Bloquinho de Notas').price(1.5).amount(1).pay();
 ledger.stores.get('Supermercado São Luís').buyer('Caixa').cart('Purchase of napkins').item('Guardanapos').price(3.99).amount(9).pay();
 ledger.get('Luísa').to('Caixa').lend(50).reason('Lending the money for those purchases')
 ledger.get('Caixa').to('Enzo').pay(50).reason('He couldn\'t pay for everything as he had already lent the money for the purchase of the pizzas')
 ledger.get('Enzo').to('Caixa').donate(13.55).reason('Donating coins for extra change as we are gonna need for the sales on march 14th')
-ledger.profit.get('Minipizzas').seller('Caixa').sale('Venda da minipizzas').item('Presunto e Queijo').price(5).amount(206).item('Frete de Entrega').price(20).amount(1).close();
+ledger.profit.get('Minipizza').seller('Caixa').sale('Venda de Minipizzas').item('Minipizza').price(5).amount(350).item('Sobra').price(-5).amount(36).close();
 
+//ledger.get('Caixa').to('Enzo').pay(250).reason('Money lent of R$ 250')
+//ledger.get('Caixa').to('Luísa').pay(50).reason('Money lent of R$ 50')
+//ledger.get('Caixa').to('Julia').pay(69).reason('Money lent of R$ 69')
+//ledger.get('Caixa').to('João Lucas').pay(57).reason('Money lent of R$ 57');
 
 // ----------------- Physical Money Management ------------------------ //
 
-// Frist sale
-
-treasure.get(10.00).add(11);
-treasure.get(5.000).add(18);
-treasure.get(2.000).add(83);
-
-treasure.get(1.000).add(48);
-treasure.get(0.500).add(35);
-treasure.get(0.250).add(5);
-treasure.get(0.100).add(14);
-treasure.get(0.050).add(0);
-treasure.get(0.010).add(0);
-
-// Donation
-treasure.get(10.00).add(3);
-
-// Compra das pizzas
-treasure.get(10.00).sub(11);
-treasure.get(5.000).sub(18);
-treasure.get(2.000).sub(83);
-treasure.get(1.000).sub(48);
-treasure.get(0.500).sub(35);
-treasure.get(0.250).sub(5);
-treasure.get(0.100).sub(14);
-treasure.get(0.050).sub(0);
-treasure.get(0.010).sub(0);
-treasure.get(10.00).sub(3);
-
-// Donation
-treasure.get(1.000).add(5);
-treasure.get(0.500).add(12);
-treasure.get(0.250).add(5);
-treasure.get(0.100).add(11);
-treasure.get(0.050).add(4);
-treasure.get(0.010).add(0);
-
+treasure.put('Vendas do Juju').type(10).amount(10).type(5).amount(18).type(2).amount(83).type(1).amount(48).type(0.5).amount(35).type(0.25).amount(5).type(0.1).amount(14).save()
+treasure.put('Segundo Investimento (1)').type(10).amount(3).save();
+treasure.take('Compra das Minipizzas').wipe();
+treasure.put('Doação do Otto').type(5).amount(2).save();
+treasure.put('Vendas das Minipizzas').type(50).amount(5).type(20).amount(8).type(10).amount(31).type(5).amount(60).type(2).amount(58).type(1).amount(26).type(0.5).amount(33).type(0.25).amount(25).type(0.1).amount(19).type(0.05).amount(7).save()
+treasure.put('Marcações das Minipizzas').type(5).amount(50 - 4).save();
 
 export { ledger, donations, treasure }
-// Second donation
 
-console.log(JSON.stringify(ledger))
+// 110.60
+
+console.log(`
+Treasure
+- Balance: ${treasure.balance}
+- Digital: ${treasure.digital}
+- Physical ${treasure.physical}
+`)
+console.log(treasure)
 console.dir(ledger, { depth: 10 })
-console.log(nanoid())
 
 
 //console.d(donations)

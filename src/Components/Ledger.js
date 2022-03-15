@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, createRef, Component } from 'react';
 import Entry from './Entry.js';
 import '../Styles/Ledger.css';
 
 import { Checkbox, TextField, FormControlLabel } from '@mui/material';
 import { nanoid } from 'nanoid';
-import { ledger } from '../App/init.js';
-
 
 function Ledger({ width, focus, items, shortForm, noteVisibility }) {
 
@@ -31,7 +29,8 @@ function Ledger({ width, focus, items, shortForm, noteVisibility }) {
 
     return (
         <>
-        <div style={{ width, backgroundColor: '#f4f4f4' }}>
+        <div style={{ width, backgroundColor: '#f4f4f4', display: 'flex' }}>
+            <div>
             <div className='controls'>
                 <TextField id="standard-basic" label="Focus" variant="standard" onChange={handleTextChange} defaultValue={focus}/>
                 <FormControlLabel control={<Checkbox onChange={handleShortFormClick}/>} label="Short Form" />
@@ -54,9 +53,30 @@ function Ledger({ width, focus, items, shortForm, noteVisibility }) {
                     )
                 ).reverse()}
             </div>
+            </div>
+            <div className='chart' style={{backgroundColor: '#f4f4f4'}}>
+                <Canvas items={items}/>
+            </div>
         </div>
         </>
     );
 };
 
-export default ledger;
+class Canvas extends Component {
+    constructor(props) {
+        super(props);
+        this.canvas = createRef();
+    };
+
+    componentDidMount() {
+        const canvas = this.canvas.current;
+        const context = canvas.getContext('2d');
+
+
+    };
+
+    render() {
+        return <canvas ref={this.canvas} width={this.props.width} height={this.props.height}></canvas>
+    };
+}
+export default Ledger;

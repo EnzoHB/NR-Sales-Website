@@ -1,70 +1,49 @@
 import { types } from "../data.js";
 import { Person } from './Person.js';
-import { Money } from "./helper/Money.js";
+import { Counter } from "./helper/Counter.js";
+import { TreasureEntry as Entry } from './helper/Entry.js';
 
 class Treasure extends Person {
-    constructor(name, digital) {
+    constructor(name, digital = 0) {
         super(name);
 
-        const bills = new Map();
-        const coins = new Map();
-        
-        this.bills = bills;
-        this.coins = coins;
-        this.digital = digital || 0;
+        this.locker = new Map();
+        this.digital = digital;
+        this.history = [];
 
         delete this.balance;
 
-        for (const type of types) {
-            const money = new Money(type);
-
-            type > 1? 
-                this.bills.set(type, money) :
-                this.coins.set(type, money) ;
-        };
+        for (const type of types) 
+            this.locker.set( type, new Counter( type ));
     };
 
     get(type) {
         const that = this;
-        const { bills } = this;
-        const { coins } = this;
         const start = { add, sub };
 
-        var money = 
-         bills.get(type) ||
-         coins.get(type);
+        var counter = this.locker.get(type);
 
-        if (!money)
+        if (!counter)
         throw new Error(`${type} doesn't exist`);
 
         function add($) {
-            money.add($);
-            that.digital -= money.type * $;
+            counter.add($);
+            that.digital -= counter.value * $;
         };
 
         function sub($) {
-            money.sub($);
-            that.digital += money.type * $;
+            counter.sub($);
+            that.digital += counter.value * $;
         };
 
         return start;
     };
 
-    digitalize() {
-
-    };
-
     get physical() {
-        const { bills } = this;
-        const { coins } = this;
+        var value = 0;
 
-        let value = 0;
-
-        for (const [ type, money ] of bills) 
-            value += money.total;
-
-        for (const [ type, money ] of coins) 
-            value += money.total;
+        for (const [ type, counter ] of this.locker) 
+            value += counter.value * counter.count;
 
         return value;
     };
@@ -75,6 +54,52 @@ class Treasure extends Person {
 
     set balance(amount) {
         return this.digital = amount;
+    };
+
+    put(reason) {
+        var that = this;
+        var entry = new Entry(reason);
+        var save = () => this.history.push ( entry.build() );
+
+        function type(t) {
+            return {
+                amount: a => {
+                    that.get(t).add(a);
+                    entry.type(t).amount(a);
+
+                    return { type, save }
+                }
+            };
+        };
+
+        return { type };
+    };
+
+    take(reason) {
+        var that = this;
+        var entry = new Entry(reason);
+        var save = () => this.history.push ( entry.build() );
+
+        function type(t) {
+            return {
+                amount: a => {
+                    that.get(t).sub(a);
+                    entry.type(t).amount(a);
+
+                    return { type, save }
+                }
+            };
+        };
+
+        function wipe() {
+            var buffer = that.take(reason)
+            
+            for (const type of types) 
+                buffer = buffer.type(type).amount(that.locker.get(type).count)
+                buffer.save();
+        };
+
+        return { type, wipe };
     };
 };
 

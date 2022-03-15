@@ -1,9 +1,8 @@
 import { Person } from "../classes/Person.js";
 import { Store } from "../classes/Store.js";
-import { Entry } from "../classes/helper/Entry.js";
 import { Receipt } from '../classes/helper/Receipt.js';
 import { Profit } from "../classes/Profit.js";
-import { ledger } from "../init.js";
+import { LedgerEntry as Entry} from '../classes/helper/Entry.js'
 
 class Ledger {
     constructor(name) {
