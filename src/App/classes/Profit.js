@@ -12,13 +12,14 @@ class Profit extends Person {
 
     product(...items) {
         for(const item of items) {
-            const product = this.products.get(item.name) || {};
+            this.products.set(item.name, 
+            this.products.get(item.name) ||
 
-            product.name = item.name;
-            product.description = product.description || '';
-            product.price = item.price;
-
-            this.products.set(product.name, product);
+                {
+                    name: item.name,
+                    price: item.price
+                }
+            );
         };
     };
 

@@ -35,6 +35,7 @@ ledger.profit.get('Minipizza').seller('Caixa').sale('Venda de Minipizzas').item(
 //ledger.get('Caixa').to('Enzo').pay(250).reason('Money lent of R$ 250')
 //ledger.get('Caixa').to('Luísa').pay(50).reason('Money lent of R$ 50')
 //ledger.get('Caixa').to('Julia').pay(69).reason('Money lent of R$ 69')
+//ledger.get('Julia').to('Pay').pay(69).reason('Money lent of R$ 69')
 //ledger.get('Caixa').to('João Lucas').pay(57).reason('Money lent of R$ 57');
 
 // ----------------- Physical Money Management ------------------------ //
@@ -44,7 +45,14 @@ treasure.put('Segundo Investimento (1)').type(10).amount(3).save();
 treasure.take('Compra das Minipizzas').wipe();
 treasure.put('Doação do Otto').type(5).amount(2).save();
 treasure.put('Vendas das Minipizzas').type(50).amount(5).type(20).amount(8).type(10).amount(31).type(5).amount(60).type(2).amount(58).type(1).amount(26).type(0.5).amount(33).type(0.25).amount(25).type(0.1).amount(19).type(0.05).amount(7).save()
-treasure.put('Marcações das Minipizzas').type(5).amount(50 - 4).save();
+treasure.put('Marcações das Minipizzas')
+.type(20).amount(3)
+.type(10).amount(2)
+.type(1).amount(6)
+.type(2).amount(6)
+.type(5).amount(5)
+.type(2).amount(2)
+.save();
 
 export { ledger, treasure }
 

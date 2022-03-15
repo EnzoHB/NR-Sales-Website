@@ -1,5 +1,4 @@
 import { Person } from "./Person.js";
-import { nanoid } from 'nanoid'
 
 class Store extends Person {
     constructor(name) { 
@@ -14,13 +13,14 @@ class Store extends Person {
 
     product(...items) {
         for(const item of items) {
-            const product = this.catalog.get(item.name) || {};
-            
-            product.name = item.name;
-            product.description = product.description || '';
-            product.price = item.price;
+            this.catalog.set(item.name, 
+            this.catalog.get(item.name) ||
 
-            this.catalog.set(product.name, product);
+                {
+                    name: item.name,
+                    price: item.price
+                }
+            );
         };
     };
 

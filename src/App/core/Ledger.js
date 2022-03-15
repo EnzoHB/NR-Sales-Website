@@ -1,6 +1,6 @@
 import { Person } from "../classes/Person.js";
 import { Store } from "../classes/Store.js";
-import { Receipt } from '../classes/helper/Receipt.js';
+import { ProfitReceipt, StoreReceipt } from '../classes/helper/Receipt.js';
 import { Profit } from "../classes/Profit.js";
 import { LedgerEntry as Entry} from '../classes/helper/Entry.js'
 
@@ -160,7 +160,7 @@ class Ledger {
 
         var member;
         var store;
-        var receipt = new Receipt();
+        var receipt = new StoreReceipt();
 
         // ----------------------- //
 
@@ -188,7 +188,7 @@ class Ledger {
         function item(name) {
             var p;
 
-            const amount = n => (receipt.item(name).price(p).amount(n).add(), { item, pay, tax });
+            const amount = n => (receipt.item(name).price(p).amount(n), { item, pay, tax });
             const price = $ => (p = $, { amount });
 
             return { price };
@@ -196,7 +196,6 @@ class Ledger {
 
         function tax($) {
             receipt.tax = $;
-            receipt.total += $;
             return { pay }
         };
 
@@ -220,7 +219,7 @@ class Ledger {
 
         var member;
         var profit;
-        var receipt = new Receipt();
+        var receipt = new ProfitReceipt();
 
         // ----------------------- //
 
@@ -246,10 +245,33 @@ class Ledger {
         };
 
         function item(name) {
-            var p;
+            var refs = {};
 
-            const amount = n => (receipt.item(name).price(p).amount(n).add(), { item, close });
-            const price = $ => (p = $, { amount });
+            function price($) {
+                refs.price = $;
+                return { amount };
+            };
+
+            function amount(n) {
+                receipt.item(name).price(refs.price).amount(n);
+                return { item, cuff, close };
+            };
+
+            function cuff(buyer) {
+                var refs = {};
+
+                function amount($) {
+                    refs.amount = $;
+                    return { payed }
+                };
+
+                function payed(p) {
+                    receipt.cuff(name).from(buyer).amount(refs.amount).payed(p);
+                    return { cuff, item };
+                };
+
+                return { amount };
+            };
 
             return { price };
         };
