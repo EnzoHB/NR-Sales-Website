@@ -31,8 +31,4 @@ ledger.add(...students);
 ledger.add(...profits);
 ledger.add(...stores);
 
-// Adding to the ledger
-donations.add(donation);
-donations.add(...students);
-
 export { ledger, donations, treasure, magic };

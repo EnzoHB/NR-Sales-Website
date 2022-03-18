@@ -15,7 +15,7 @@ class Ledger {
         members.forEach(member => this.members.set(member.name, member))
     };
 
-    isMember(name, instance) { 
+    is(name, instance) { 
         if (!this.members.has(name))
         throw new Error(`${name} is not a ledger member`); 
 
@@ -69,7 +69,7 @@ class Ledger {
     get(name) {
         const {  members } = this;
         const {  history } = this;
-        const isMember = this.isMember.bind(this);
+        const isMember = this.is.bind(this);
         
         isMember(name);
 
@@ -152,9 +152,12 @@ class Ledger {
     get stores() {
 
         const ledger = this;
+
         const {  members } = this;
-        const getMember = members.get.bind(members);
-        const isMember = this.isMember.bind(this);
+        const {  history } = this;
+
+        const _is = ledger.is.bind(this);
+        const _get = members.get.bind(members);
 
         // ----------------------- //
 
@@ -166,15 +169,15 @@ class Ledger {
 
         function get(name) {
             store = 
-            getMember(name);
-            isMember(name, Store); 
+            _get(name);
+            _is(name, Store); 
             return { buyer }
         };
 
         function buyer(name) {
             member = 
-            getMember(name); 
-            isMember(name, Person);
+            _get(name);
+            _is(name, Person); 
             return { cart }
         };
 
@@ -211,9 +214,12 @@ class Ledger {
     get profit() {
 
         const ledger = this;
+
         const {  members } = this;
-        const getMember = members.get.bind(members);
-        const isMember = this.isMember.bind(this);
+        const {  history } = this;
+
+        const _is = ledger.is.bind(this);
+        const _get = members.get.bind(members);
 
         // ----------------------- //
 
@@ -225,15 +231,15 @@ class Ledger {
 
         function get(name) {
             profit = 
-            getMember(name);
-            isMember(name, Profit); 
+            _get(name);
+            _is(name, Profit); 
             return { seller }
         };
 
         function seller(name) {
             member = 
-            getMember(name); 
-            isMember(name, Person);
+            _get(name);
+            _is(name, Person); 
             return { sale }
         };
 
@@ -287,13 +293,107 @@ class Ledger {
 
     get fetch() {
     
-        var some  = props => this.history.filter(entry => Object.entries(props).some (([key, filter]) => entry[key] === filter(entry)))
-        var every = props => this.history.filter(entry => Object.entries(props).every(([key, filter]) => entry[key] === filter(entry)))
+        var some  = props => this.history.filter(entry => Object.entries(props).some (([key, filter]) => entry[key] === filter(entry, key)))
+        var every = props => this.history.filter(entry => Object.entries(props).every(([key, filter]) => entry[key] === filter(entry, key)))
 
         return {
             some,
             every
         }
+    };
+
+    get profile() {
+        const ledger = this;
+
+        const {  members } = this;
+        const {  history } = this;
+
+        const _is = ledger.is.bind(ledger);
+        const _get = members.get.bind(members);
+
+        // --------- Closure Variables -------- //
+
+        var member;
+        var entries;
+
+        // -------------------------- //
+
+        const Profile = { entries, fetch, snapshots }
+        const methods = { fetch, identity, snapshots }
+
+        function get(name) {
+            member = 
+            _get(name); 
+            _is(name);
+
+            // ---- After ---- //
+
+            entries = ledger.fetch.some({ 
+
+                subject: () => member.name,
+                target: () => member.name
+
+            }).map(reference => {
+                
+                var entry =  Object.create(reference);
+                var { subject, target, operation } = reference; 
+                var { name } = member;
+
+                var flow;
+                var sender;
+                var receiver;
+
+                subject === name? 
+                    operation === 'receipt'?  
+                        ( flow =  1, sender = target, receiver = subject ) : 
+                        ( flow = -1, sender = subject, receiver = target ) :
+                target  === name? 
+                    operation === 'receipt'?
+                         -1 :  
+                         1 : 0 ;
+
+                return entry;
+            });
+
+            return Profile;
+        };
+
+        function identity() {
+
+        };
+
+        function fetch() {
+    
+            var some  = props => entries.filter(entry => Object.entries(props).some (([key, filter]) => entry[key] === filter(entry, key)))
+            var every = props => entries.filter(entry => Object.entries(props).every(([key, filter]) => entry[key] === filter(entry, key)))
+        
+            return {
+                some,
+                every
+            }        
+        };
+
+        function snapshots() {
+            var next;
+            var done;
+
+            var index = 0;
+            var balance = 0;
+
+            return () => {
+
+                balance += 
+                entries[index].flow * 
+                entries[index].amount;
+
+                next = { balance };
+                index++;
+
+                return { next, done }
+            }
+        };
+
+        return { get }
     };
 };
 

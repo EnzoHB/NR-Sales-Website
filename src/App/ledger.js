@@ -1,6 +1,5 @@
 import { ledger, treasure, donations, magic } from "./init.js";
 import { names } from './data.js'
-import { Treasure } from "./classes/Treasure.js";
 
 // ----------------- Transaction history Management ------------------------ //
 
@@ -34,20 +33,18 @@ ledger.get('Enzo').to('Caixa').donate(13.55).reason('Donating coins for extra ch
 ledger.profit.get('Minipizza').seller('Caixa').sale('Venda de Minipizzas')
 .item('Minipizza').price(5).amount(350)
 .cuff('Otto').amount(6).payed(true)
-.cuff('Miguel').amount(2).payed(false)
-.cuff('Julia').amount(3).payed(false)
+.cuff('Miguel').amount(2).payed(false) // false
+.cuff('Julia').amount(3).payed(true)
 .cuff('Enzo').amount(8).payed(true)
 .cuff('João Lucas').amount(12).payed(true)
-.cuff('Brandão').amount(1).payed(false)
+.cuff('Brandão').amount(1).payed(false) // false
 .cuff('Sérgio').amount(4).payed(true)
-.cuff('Tati').amount(6).payed(false)
-.cuff('Marcos').amount(1).payed(false)
-.cuff('Cíntia').amount(1).payed(false)
+.cuff('Tati').amount(6).payed(false) // false
+.cuff('Cíntia').amount(1).payed(false) // false
 .cuff('David').amount(2).payed(true)
-.cuff('Vanessa').amount(4).payed(false)
-.cuff('Ana Laura').amount(1).payed(false)
-.cuff('Ravi').amount(1).payed(false)
-.cuff('Júlia 9').amount(1).payed(false)
+.cuff('Vanessa').amount(4).payed(true)
+.cuff('Ana Laura').amount(1).payed(false) // false
+.cuff('Ravi').amount(2).payed(true)
 .item('Sobra').price(-5).amount(38).close();
 
 //ledger.get('Caixa').to('Enzo').pay(250).reason('Money lent of R$ 250')
@@ -65,11 +62,12 @@ treasure.put('Doação do Otto').type(5).amount(2).save();
 treasure.put('Vendas das Minipizzas').type(50).amount(5).type(20).amount(8).type(10).amount(31).type(5).amount(60).type(2).amount(58).type(1).amount(26).type(0.5).amount(33).type(0.25).amount(25).type(0.1).amount(19).type(0.05).amount(7).save()
 treasure.put('Marcações das Minipizzas')
 .type(20).amount(3)
-.type(10).amount(2)
+.type(10).amount(3)
 .type(1).amount(6)
 .type(2).amount(6)
 .type(5).amount(6)
 .type(2).amount(2)
+.type(10).amount(7)
 .save();
 
 export { ledger, treasure }

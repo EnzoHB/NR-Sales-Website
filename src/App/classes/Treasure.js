@@ -19,9 +19,8 @@ class Treasure extends Person {
 
     get(type) {
         const that = this;
+        const counter = this.locker.get(type);
         const start = { add, sub };
-
-        var counter = this.locker.get(type);
 
         if (!counter)
         throw new Error(`${type} doesn't exist`);

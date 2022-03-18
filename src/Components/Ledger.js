@@ -1,12 +1,46 @@
 import React, { useState, createRef, Component } from 'react';
-import Entry from './Entry.js';
-import '../Styles/Ledger.css';
+import Entry from './Entry';
+import Flex from './Flex';
 
-import { Checkbox, TextField, FormControlLabel } from '@mui/material';
+import { Box, Switch, TextField, FormControlLabel } from '@mui/material';
+import { styled } from '@mui/material';
 import { nanoid } from 'nanoid';
-import { treasure } from '../App/ledger';
+import { ledger } from '../App/ledger.js'
 
-function Ledger({ width, focus, items, shortForm, noteVisibility }) {
+function Ledger() {
+
+    const [ switchOn, setSwitchOn ] = useState(true);
+    const [ focus, setFocus ] = useState('Caixa');
+
+    const Body = styled(Box)(({ theme }) => ({
+        width: '100%',
+    }));
+
+    const handleSwitchChange = event => setSwitchOn(event.target.checked)
+
+    return (
+        <Body>
+            <Flex>
+                <TextField id="standard-basic" label="Focus" variant="standard" defaultValue={'Caixa'}/>
+                <FormControlLabel control={<Switch onChange={handleSwitchChange} defaultChecked={switchOn}/>} label={ switchOn? 'Income' : 'Outcome'} />
+            </Flex>
+            <EntriesDisplay items={ledger.profile.get(focus).fetch().every({ flow: () => switchOn? 1 : -1 })}/>
+        </Body>
+    )
+};
+
+
+function EntriesDisplay({ items }) {
+    return (
+        <Flex direction='column-reverse'>
+            {items.map(item => <Entry key={item.id} name={item.flow == 1? item.subject : item.target} flow={item.flow} amount={item.amount} />)}
+        </Flex>
+    )
+};
+
+/*
+
+function Ledger({ width, focus, items }) {
 
     var [ width, setWidth ] = useState(width);
     var [ items, setItems ] = useState(items) 
@@ -55,10 +89,11 @@ function Ledger({ width, focus, items, shortForm, noteVisibility }) {
                 ).reverse()}
             </div>
             </div>
-            <div className='chart' style={{backgroundColor: '#f4f4f4'}}>
+            <div>
                 <div>
                     Treasure<br/><br/>- Balance: ${treasure.balance}<br/>- Digital: ${treasure.digital}<br/>- Physical ${treasure.physical}
                 </div>
+                <Entry />
                 <Canvas items={items}/>
             </div>
         </div>
@@ -83,4 +118,6 @@ class Canvas extends Component {
         return <canvas ref={this.canvas} width={this.props.width} height={this.props.height}></canvas>
     };
 }
+
+*/
 export default Ledger;
