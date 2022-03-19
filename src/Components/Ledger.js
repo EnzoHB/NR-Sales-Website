@@ -13,16 +13,15 @@ function Ledger() {
     const [ focus, setFocus ] = useState('Caixa');
 
     const Body = styled(Box)(({ theme }) => ({
-        width: '500px',
+        width: '100%',
     }));
 
     const handleSwitchChange = event => setSwitchOn(event.target.checked)
-    const handleTextInputChange = event => setFocus(event.target.value)
 
     return (
         <Body>
             <Flex>
-                <TextField id="standard-basic" label="Focus" variant="standard" defaultValue={focus} onChange={handleTextInputChange}/>
+                <TextField id="standard-basic" label="Focus" variant="standard" defaultValue={'Caixa'}/>
                 <FormControlLabel control={<Switch onChange={handleSwitchChange} defaultChecked={switchOn}/>} label={ switchOn? 'Income' : 'Outcome'} />
             </Flex>
             <EntriesDisplay items={ledger.profile.get(focus).fetch().every({ flow: () => switchOn? 1 : -1 })}/>

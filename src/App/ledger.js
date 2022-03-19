@@ -1,8 +1,5 @@
 import { ledger, treasure, donations, magic } from "./init.js";
-// import { memoryUsage, cpuUsage } from 'process';
 import { names } from './data.js'
-
-// const startUsage = cpuUsage();
 
 // ----------------- Transaction history Management ------------------------ //
 
@@ -50,8 +47,6 @@ ledger.profit.get('Minipizza').seller('Caixa').sale('Venda de Minipizzas')
 .cuff('Ravi').amount(2).payed(true)
 .item('Sobra').price(-5).amount(38).close();
 
-console.log(ledger.profile.get('Caixa').fetch().every({ flow: () => 1 }))
-
 //ledger.get('Caixa').to('Enzo').pay(250).reason('Money lent of R$ 250')
 //ledger.get('Caixa').to('Luísa').pay(50).reason('Money lent of R$ 50')
 //ledger.get('Caixa').to('Julia').pay(69).reason('Money lent of R$ 69')
@@ -75,7 +70,6 @@ treasure.put('Marcações das Minipizzas')
 .type(10).amount(7)
 .save();
 
-
 export { ledger, treasure }
 
 // 110.60
@@ -88,8 +82,7 @@ Treasure
 `)
 
 console.log(treasure)
-console.dir(ledger, { depth: 20 });
-// console.log(Object.fromEntries(Object.entries(memoryUsage(       )).map(([key, value]) => [key, `${((value / 1024 / 1024)).toPrecision(2)} MB`])));
-// console.log(Object.fromEntries(Object.entries(cpuUsage(startUsage)).map(([key, value]) => [key, `${((value / 1000       )).toPrecision(2)}s`])))
+console.dir(ledger, { depth: 20 })
+
 
 //console.d(donations)
