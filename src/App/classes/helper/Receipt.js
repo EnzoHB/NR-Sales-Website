@@ -4,40 +4,6 @@ import { nanoid } from 'nanoid';
 // Store Receipt
 // Profit Receipt
 
-
-class Receipt {
-    constructor(name, note) {
-        this.id = nanoid();
-        this.name = name;
-        this.note = note;
-        this.total = 0;
-        this.tax = 0;
-        this.items = [];
-    };
-
-    item(name) {
-        var that = this;
-        var p;
-        var a;
-
-        const amount = n => (a = n, { add }); 
-        const price = $ => (p = $, { amount });
-
-        function add() {
-
-            let price = p;
-            let amount = a;
-
-            that.items.push({ name, price, amount });
-            that.total = that.items.reduce((value, { price, amount }) => value += price * amount, that.tax); 
-
-            return that; 
-        };
-
-        return { price };
-    };
-};
-
 class StoreReceipt {
     constructor(name, note) {
         this.id = nanoid();
@@ -108,7 +74,10 @@ class ProfitReceipt {
         var cuffs = Array.from(this.cuffs.values());
 
         this.sales = items.reduce((acc, { price, amount }) => acc += price * amount, 0);
-        this.pendent = cuffs.reduce((acc, { item, amount, payed }) => {
+        this.pendent = cuffs.reduce((acc, cuff) => {
+            var { item, amount, payed } = cuff;
+
+            delete cuff.item;
 
             if (payed) return acc;
             var pendent = this.items.get(item).price * amount;
@@ -133,4 +102,4 @@ class ProfitReceipt {
     };
 };
 
-export { Receipt, StoreReceipt, ProfitReceipt };
+export { StoreReceipt, ProfitReceipt };
