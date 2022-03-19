@@ -273,7 +273,7 @@ class Ledger {
 
                 function payed(p) {
                     receipt.cuff(name).from(buyer).amount(refs.amount).payed(p);
-                    return { cuff, item };
+                    return { cuff, item, close };
                 };
 
                 return { amount };
