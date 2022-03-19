@@ -75,10 +75,11 @@ class Ledger {
 
         // ---------------------------------------------- // 
 
-        var note;
-        var operation;
+        var subject = name;
         var target;
+        var operation;
         var amount;
+        var note;
 
         // ----------------------------- //
 
@@ -89,13 +90,18 @@ class Ledger {
         // ----------------------------- //
 
         function receive($) {
-            operation = 'receipt';
+            operation = 'payment';
+            subject = target;
+            target = name;
             amount = $
 
             members.get(name).receive($);
             members.get(target).send($);
 
             return finish;
+
+            // Caixa -- Receives from -- Enzo
+            // Enzo -- pays -- Caixa
         };
     
         function donate($){
@@ -140,7 +146,6 @@ class Ledger {
         };
 
         function done() {
-            var subject = name;
             var entry = new Entry({ subject, operation, target, amount, note });
 
             history.push(entry);
@@ -339,19 +344,10 @@ class Ledger {
                 var { subject, target, operation } = reference; 
                 var { name } = member;
 
-                var flow;
-                var sender;
-                var receiver;
-
-                subject === name? 
-                    operation === 'receipt'?  
-                        ( flow =  1, sender = target, receiver = subject ) : 
-                        ( flow = -1, sender = subject, receiver = target ) :
-                target  === name? 
-                    operation === 'receipt'?
-                         -1 :  
-                         1 : 0 ;
-
+                entry.flow = 
+                    subject === name? -1 :
+                    target  === name?  1 : 0; 
+ 
                 return entry;
             });
 

@@ -80,30 +80,29 @@ class ProfitReceipt {
     item(name) {
         return {
             price: price => ({
-                amount: amount => this.items.set(name, { name, price, amount })
+                amount: amount => this.items.set(name, { name, price, amount, cuffs: [] })
             })
         };
     };
 
-    cuff(item) {
+    cuff(name) {
         return {
             from: from => ({
                 amount: amount => ({
-                    payed: payed => this.cuffs.set(from, { item, from, amount, payed })
+                    payed: payed => {
+
+                        if (!this.items.has(name))
+                            throw new Error(`${name} was not defined as an available item`);
+
+                            this.items.get(name).cuffs.push({ from, amount, payed });
+                            this.cuffs.set(from, { from, amount, payed, item: name });
+                    }
                 })
             })
         };
     };
 
     build() {
-
-        // Validating Cuffs and Items
-        this.cuffs.forEach(cuff => { 
-            if (!this.items.has(cuff.item))
-                throw new Error(`${cuff.item} was not defined as an available item`)  
-        })
-
-        // --------------------------- //
 
         var items = Array.from(this.items.values());
         var cuffs = Array.from(this.cuffs.values());
@@ -118,11 +117,12 @@ class ProfitReceipt {
             return acc += Number(pendent);
 
         }, 0);
+
+        delete this.cuffs;
         
         return (
 
             this.items = items,
-            this.cuffs = cuffs,
 
             this.total = 
             this.sales +
