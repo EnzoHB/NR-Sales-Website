@@ -1,7 +1,5 @@
-import React, { Component } from 'react';
-import Flex from './Flex';
-import { styled } from '@mui/material/styles';
-import { Avatar, Paper, Typography } from '@mui/material';
+import React from 'react';
+import { Box, Avatar, Paper, Typography } from '@mui/material';
 
 function Entry ({ 
 
@@ -18,47 +16,6 @@ function Entry ({
 
 }) {
 
-    // ----------------- Styling Components ----------------- //
-
-    const Body = styled(Paper)(({ theme }) => ({
-        display: 'flex',
-        padding: '10px',
-        justifyContent: 'space-between',
-        minWidth: 'max-content'
-    }));
-
-    const Name = styled(Typography)(({ theme }) => ({
-        fontWeight: 'bold',
-        padding: 0
-    }));
-
-    const Time = styled(Typography)(({ theme }) => ({
-        fontWeight: '300',
-        fontSize: 14
-    }));
-
-    const Amount = styled(Typography)(({ theme }) => ({
-        fontWeight: 'bold',
-        padding: 0
-    }));
-
-    const Profile = styled(Avatar)(({ theme }) => ({ 
-        backgroundColor: 'white', 
-        color: 'black', 
-        fontWeight: '300',
-    }));
-
-    const Circle = styled(Paper)(({ theme }) => ({
-        borderRadius: '50%',
-        minBlockSize: 'fit-content'
-    }));
-
-    // --------------- CSS Variables ------------------ //
-
-    const center = 'center';
-    const column = 'column';
-    const gap = '10';
-
     // ------------------- Values ----------------------- //
 
     const date = new Date(timestamp).toLocaleDateString('pt-br').replaceAll('/', '.')
@@ -67,20 +24,82 @@ function Entry ({
     // ------------------- Render ----------------------- //
 
     return (
-        <Body onClick={onClick} elevation={0} square>
-            <Flex align={center} gap={gap}>
-                <Circle elevation={3}>
-                    <Profile alt={name} src={src} />
-                </Circle>
-                <Flex justify={center} direction={column}>
-                    <Name>{name}</Name>
-                    <Time>{date}</Time>
-                </Flex>
-            </Flex>
-            <Flex>
-                <Amount>{value}</Amount>
-            </Flex>
-        </Body>
+        <Paper
+            square
+            elevation={0}
+            sx={{
+                display: 'flex',
+                padding: '10px',
+                justifyContent: 'space-between',
+                boxSizing: 'border-box',
+                width: '100%',
+            }}
+        >
+            <Box
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px'
+                }}
+            >
+                <Paper
+                    elevation = {2}
+                    sx={{
+                        borderRadius: '50%',
+                        minBlockSize: 'fit-content'
+                    }}
+                >
+                    <Avatar
+                        alt={name}
+                        src={src}
+                        sx={{
+                            height: 20,
+                            width: 20,
+                            backgroundColor: 'white', 
+                            color: 'black', 
+                            fontWeight: '300',      
+                        }}
+                    />
+                </Paper>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        flexDirection: 'column'
+                    }}
+                >
+                    <Typography
+                        sx={{
+                            fontWeight: 'bold',
+                            padding: 0,
+                            textOverflow: 'ellipses',
+                            fontSize: 12
+                        }}
+                    > 
+                    {name}
+                    </Typography>
+                    <Typography
+                        sx={{
+                            fontWeight: '300',
+                            fontSize: 10
+                        }}
+                    > 
+                    {date}
+                    </Typography>
+                </Box>
+            </Box>
+            <Box>
+                <Typography
+                    sx={{
+                        fontWeight: 'bold',
+                        fontSize: 12,
+                        padding: 0
+                    }}
+                >
+                {value}
+                </Typography>
+            </Box>
+        </Paper>
     );
 };
 

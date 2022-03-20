@@ -1,20 +1,19 @@
 import React from 'react';
-import Ledger from './Components/Ledger.js';
+import Screen from './Components/Screen'
 import { ledger } from './App/init.js';
+import { Box } from '@mui/system';
 
-const items = ledger.history.map(entry => {
-  console.log(entry);
-})
 function App() {
-  const width = '450px';
-  const focus = 'Caixa';
-  const shortForm = false;
-  const noteVisibility = false;
-
   return (
-    <>
-      <Ledger width={width} focus={focus} shortForm={shortForm} noteVisibility={noteVisibility}></Ledger>
-    </>
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}
+    >
+      <Screen/>
+    </Box>
   )
 }
 

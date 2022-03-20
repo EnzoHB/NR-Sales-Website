@@ -4,36 +4,54 @@ import Flex from './Flex';
 
 import { Box, Switch, TextField, FormControlLabel } from '@mui/material';
 import { styled } from '@mui/material';
-import { nanoid } from 'nanoid';
 import { ledger } from '../App/ledger.js'
 
 function Ledger() {
 
-    const [ switchOn, setSwitchOn ] = useState(true);
+    const [ flow, setFlow ] = useState(1);
     const [ focus, setFocus ] = useState('Caixa');
 
     const Body = styled(Box)(({ theme }) => ({
-        width: '100%',
+        width: '315',
     }));
 
-    const handleSwitchChange = event => setSwitchOn(event.target.checked)
+    // ------------------ Handlers ---------------------------- //
+
+    const handleSwitchChange = event => setFlow(event.target.checked? 1 : -1);
+    const handleTextInput = event => setFocus(event.target.value);
+
+    // ----------------- Handling Stuff  -------------------- //
+
+    try {
+
+        const { every, some } = ledger.profile.get(focus).fetch();
+        const items = flow === 1? 
+    
+        every({ target : () => focus }) : 
+        every({ subject: () => focus }) ;
 
     return (
         <Body>
             <Flex>
-                <TextField id="standard-basic" label="Focus" variant="standard" defaultValue={'Caixa'}/>
-                <FormControlLabel control={<Switch onChange={handleSwitchChange} defaultChecked={switchOn}/>} label={ switchOn? 'Income' : 'Outcome'} />
+                <TextField id="standard-basic" label="Focus" variant="standard" defaultValue={'Caixa'} onChange={handleTextInput}/>
+                <FormControlLabel control={ <Switch onChange={handleSwitchChange} checked={flow == 1? true : false}/> } label='Outcome / Income' />
             </Flex>
-            <EntriesDisplay items={ledger.profile.get(focus).fetch().every({ flow: () => switchOn? 1 : -1 })}/>
+            <EntriesDisplay items={items} flow={flow}/>
         </Body>
     )
+
+    } catch(error) {
+        return <></>
+    };
 };
 
 
-function EntriesDisplay({ items }) {
+function EntriesDisplay({ items, flow }) {
+    const prop = flow == 1? 'subject' : 'target';
+
     return (
         <Flex direction='column-reverse'>
-            {items.map(item => <Entry key={item.id} name={item.flow == 1? item.subject : item.target} flow={item.flow} amount={item.amount} />)}
+            {items.map(item => <Entry key={item.id} name={item[prop]} flow={flow} amount={item.amount} />)}
         </Flex>
     )
 };
