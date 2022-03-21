@@ -1,4 +1,4 @@
-import { ledger, treasure, donations, magic } from "./init.js";
+import { ledger, treasure, magic } from "./init.js";
 // import { memoryUsage, cpuUsage } from 'process';
 import { names } from './data.js'
 
@@ -37,14 +37,14 @@ ledger.get('Enzo').to('Caixa').donate(13.55).reason('Donating coins for extra ch
 ledger.profit.get('Minipizza').seller('Caixa').sale('Venda de Minipizzas')
 .item('Minipizza').price(5).amount(350)
 .cuff('Otto').amount(6).payed(true)
-.cuff('Miguel').amount(2).payed(false) // false
+.cuff('Miguel').amount(2).payed(false) // True
 .cuff('Julia').amount(3).payed(true)
 .cuff('Enzo').amount(8).payed(true)
 .cuff('João Lucas').amount(12).payed(true)
 .cuff('Brandão').amount(1).payed(false) // false
 .cuff('Sérgio').amount(4).payed(true)
 .cuff('Tati').amount(6).payed(false) // false
-.cuff('Cíntia').amount(1).payed(false) // false
+.cuff('Cíntia').amount(1).payed(false) // True
 .cuff('David').amount(2).payed(true)
 .cuff('Vanessa').amount(4).payed(true)
 .cuff('Ana Laura').amount(1).payed(false) // false
@@ -59,9 +59,11 @@ ledger.stores.get('Sorveteria Barufi').buyer('Caixa').cart('Compra dos Sorvetes'
 
 ledger.profit.get('Sorvete').seller('Caixa').sale('Venda de Sorvetes')
 .item('Chocolate').price(3).amount(24 * ( 10 - 5) + 12)
-.item('Morango').price(2).amount(24 * ( 10 - 1) + 22)
-.item('Limão').price(2).amount(24 * ( 10 - 3) + 12)
-.item('Flocos').price(3).amount(24 * ( 10 - 4) + 22)
+.item('Morango').price(2).amount(24 * ( 7 -  1) + 2)
+.item('Limão').price(2).amount(24 * ( 7 - 3) + 12)
+.item('Flocos').price(3).amount(24 * ( 7 - 4) + 2)
+
+// Review 
 
 .item('Cuffs on R$ 3,00').price(3).amount(0)
 
@@ -81,6 +83,7 @@ ledger.profit.get('Sorvete').seller('Caixa').sale('Venda de Sorvetes')
 
 .item('Cuffs on R$ 2,00').price(2).amount(0)
 
+.cuff('Enzo').amount(1).payed(false)
 .cuff('Julia').amount(2).payed(false)
 .cuff('João Lucas').amount(1).payed(false)
 .cuff('Luísa').amount(1).payed(false)

@@ -310,6 +310,8 @@ class Ledger {
         const {  members } = this;
         const {  history } = this;
 
+        // Get Cuffs
+
         const _is = ledger.is.bind(ledger);
         const _get = members.get.bind(members);
 

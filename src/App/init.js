@@ -7,10 +7,8 @@ import { Treasure } from "./classes/Treasure.js"
 
 // Ledgers
 const ledger = new Ledger('Vendas 1º médio');
-const donations = new Ledger('Donation Management');
 
-// Main Members 
-const treasure = new Treasure('Caixa');
+// Members
 const donation = new Person('Doações');
 const magic = new Profit('Magia');
 
@@ -18,17 +16,21 @@ const magic = new Profit('Magia');
 const storify = name => new Store(name);
 const profitify = name => new Profit(name);
 const personify = name => new Person(name);
+const treasurify = name => new Treasure(name);
 
-const stores = names.stores.map(storify);
+const treasures = names.treasures.map(treasurify);
 const students = names.students.map(personify);
 const profits = names.profits.map(profitify);
+const stores = names.stores.map(storify);
 
 // Adding to the ledger
-ledger.add(treasure);
+ledger.add(...treasures);
 ledger.add(donation);
 ledger.add(magic)
 ledger.add(...students);
 ledger.add(...profits);
 ledger.add(...stores);
 
-export { ledger, donations, treasure, magic };
+const treasure = ledger.members.get('Caixa');
+
+export { ledger, treasure, magic };
