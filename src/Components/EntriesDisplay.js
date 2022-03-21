@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Box } from '@mui/system';
 import Entry from './Entry';
-import { Button, IconButton, Menu, Typography, MenuItem } from '@mui/material';
+
+import { Box, IconButton, Menu, Typography, MenuItem } from '@mui/material';
 import { Sort } from '@mui/icons-material';
 
-export default function EntriesDisplay({ focus, profile, switchTab }) {
+export default function EntriesDisplay({ focus, profile, onEntryClick }) {
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [ sortType, setSortType ] = useState(0);
@@ -40,7 +40,7 @@ export default function EntriesDisplay({ focus, profile, switchTab }) {
         const flow = subject === focus? -1 : 1;
         const name = subject === focus? target : subject;
 
-        return <Entry key={id} name={name} flow={flow} amount={amount} timestamp={timestamp} />
+        return <Entry onClick={onEntryClick} key={id} name={name} flow={flow} amount={amount} timestamp={timestamp} />
     });
 
   return (
@@ -85,7 +85,7 @@ export default function EntriesDisplay({ focus, profile, switchTab }) {
             </IconButton>
             <Menu
                 id="sort-list"
-                MenuListProps={{ 'aria-labelledby': 'sort-list' }}
+                // MenuListProps={{ 'aria-labelledby': 'sort-list' }}
                 anchorEl={anchorEl}
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}

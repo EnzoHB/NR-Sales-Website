@@ -26,6 +26,7 @@ function Entry ({
     return (
         <Paper
             square
+            onClick={onClick}
             elevation={0}
             sx={{
                 display: 'flex',

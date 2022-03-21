@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Entry from './Entry';
 import EntriesDisplay from './EntriesDisplay';
+import AppHeader from './AppHeader';
 import { ledger } from '../App/ledger.js';
 import { Paper, Box, IconButton, Typography, Divider, Button } from '@mui/material';
 import { createTheme } from '@mui/system';
@@ -8,14 +9,21 @@ import { AccountCircle, Settings } from '@mui/icons-material';
 
 function Screen() {
     const focus = 'Caixa';
-    const width = 315;
-    const height = 667;
+    const width = 315; // 315
+    const height = 667; // 667
     const padding = 3;  
     const defaultItems = 4;
 
     // ---------- Items ------------ //
 
+    const [ expanded, setExpanded ] = useState(true);
+
     const profile = ledger.profile.get(focus);
+    const member = ledger.members.get(focus);
+
+    profile.balance = member.balance.toLocaleString('pt-br', {style: 'currency', currency: 'BRL'})
+
+    const handleClick = event => setExpanded(!expanded);
 
     return (
         <Paper
@@ -27,89 +35,7 @@ function Screen() {
                 flexDirection: 'column'
             }}
         >
-            <Paper 
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: '35%',
-                    width: '100%',
-                    padding: '10px',
-                    background: 'linear-gradient(107.4deg, #0100EC 0%, #F836F4 100.01%)',
-                    borderRadius: '0 0 50px 50px',
-                    boxSizing: 'border-box'
-                }}
-            >
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between'
-                    }}
-                >
-                    <IconButton>
-                        <Settings 
-                            sx={{
-                                color: 'white'
-                            }}
-                        />
-                    </IconButton>
-                    <IconButton>
-                        <AccountCircle 
-                            sx={{
-                                color: 'white'
-                            }}
-                        />
-                    </IconButton>
-                </Box>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        flexGrow: 1.5,
-                        color: 'white'
-                    }}
-                >
-                    <Typography 
-                        sx={{
-                            fontSize: 40,
-                            fontWeight: 600,
-                        }}
-                    >
-                        R$ 205,00
-                    </Typography>
-                    <Typography
-                        sx={{
-                            fontWeight: 600,
-                        }}
-                    >
-                        Total Balance
-                    </Typography>
-                </Box>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        gap: '10px'
-                    }}
-                >
-                    <Button
-                        sx={{
-                            color: 'white',
-                        }}
-                    >
-                        Profits
-                    </Button>
-                    <Button
-                        sx={{
-                            color: 'white'
-                        }}
-                    >
-                        Stores
-                    </Button>
-                </Box>
-            </Paper>
+            <AppHeader profile={profile} expandend={expanded} onSettingsClick={handleClick}></AppHeader>
             <Box 
                 sx={{
                     display: 'flex',
