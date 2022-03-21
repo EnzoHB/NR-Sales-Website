@@ -6,7 +6,7 @@ function Entry ({
     // ----------------- Default Values ----------------- //
 
     name = 'Someone', 
-    onClick = null,
+    onClick = () => {},
 
     src = '',
     flow = '',

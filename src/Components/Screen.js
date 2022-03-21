@@ -16,14 +16,10 @@ function Screen() {
 
     // ---------- Items ------------ //
 
-    const [ expanded, setExpanded ] = useState(true);
-
     const profile = ledger.profile.get(focus);
     const member = ledger.members.get(focus);
 
     profile.balance = member.balance.toLocaleString('pt-br', {style: 'currency', currency: 'BRL'})
-
-    const handleClick = event => setExpanded(!expanded);
 
     return (
         <Paper
@@ -35,7 +31,7 @@ function Screen() {
                 flexDirection: 'column'
             }}
         >
-            <AppHeader profile={profile} expandend={expanded} onSettingsClick={handleClick}></AppHeader>
+            <AppHeader profile={profile} onSettingsClick={handleClick}></AppHeader>
             <Box 
                 sx={{
                     display: 'flex',

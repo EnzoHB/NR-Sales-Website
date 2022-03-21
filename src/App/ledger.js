@@ -37,17 +37,17 @@ ledger.get('Enzo').to('Caixa').donate(13.55).reason('Donating coins for extra ch
 ledger.profit.get('Minipizza').seller('Caixa').sale('Venda de Minipizzas')
 .item('Minipizza').price(5).amount(350)
 .cuff('Otto').amount(6).payed(true)
-.cuff('Miguel').amount(2).payed(false) // True
+.cuff('Miguel').amount(2).payed(true)
 .cuff('Julia').amount(3).payed(true)
 .cuff('Enzo').amount(8).payed(true)
 .cuff('João Lucas').amount(12).payed(true)
 .cuff('Brandão').amount(1).payed(false) // false
 .cuff('Sérgio').amount(4).payed(true)
 .cuff('Tati').amount(6).payed(false) // false
-.cuff('Cíntia').amount(1).payed(false) // True
+.cuff('Cíntia').amount(1).payed(true)
 .cuff('David').amount(2).payed(true)
 .cuff('Vanessa').amount(4).payed(true)
-.cuff('Ana Laura').amount(1).payed(false) // false
+.cuff('Ana Laura').amount(1).payed(false)
 .cuff('Ravi').amount(2).payed(true)
 .item('Sobra').price(-5).amount(38).close();
 
@@ -67,11 +67,11 @@ ledger.profit.get('Sorvete').seller('Caixa').sale('Venda de Sorvetes')
 
 .item('Cuffs on R$ 3,00').price(3).amount(0)
 
-.cuff('Enzo').amount(3).payed(false)
-.cuff('Julia').amount(1).payed(false)
-.cuff('João Lucas').amount(2).payed(false)
-.cuff('Eduardo').amount(1).payed(false)
-.cuff('Luísa').amount(1).payed(false)
+.cuff('Enzo').amount(3).payed(true)
+.cuff('Julia').amount(1).payed(true)
+.cuff('João Lucas').amount(2).payed(true)
+.cuff('Eduardo').amount(1).payed(true)
+.cuff('Luísa').amount(1).payed(true)
 .cuff('Otto').amount(1).payed(false)
 .cuff('Igor').amount(1).payed(false)
 .cuff('Lilian').amount(2).payed(false)
@@ -83,10 +83,10 @@ ledger.profit.get('Sorvete').seller('Caixa').sale('Venda de Sorvetes')
 
 .item('Cuffs on R$ 2,00').price(2).amount(0)
 
-.cuff('Enzo').amount(1).payed(false)
-.cuff('Julia').amount(2).payed(false)
-.cuff('João Lucas').amount(1).payed(false)
-.cuff('Luísa').amount(1).payed(false)
+.cuff('Enzo').amount(1).payed(true)
+.cuff('Julia').amount(2).payed(true)
+.cuff('João Lucas').amount(1).payed(true)
+.cuff('Luísa').amount(1).payed(true)
 .cuff('Luísa 8º').amount(1).payed(false)
 .cuff('João Miguel').amount(1).payed(false)
 .cuff('Theo Maternal').amount(1).payed(false)
@@ -100,12 +100,10 @@ ledger.profit.get('Sorvete').seller('Caixa').sale('Venda de Sorvetes')
 .cuff('Isadora 9º').amount(1).payed(false)
 .cuff('Rafael').amount(1).payed(false).close()
 
-
-//ledger.get('Caixa').to('Enzo').pay(250).reason('Money lent of R$ 250')
-//ledger.get('Caixa').to('Luísa').pay(50).reason('Money lent of R$ 50')
-//ledger.get('Caixa').to('Julia').pay(69).reason('Money lent of R$ 69')
-//ledger.get('Julia').to('Pay').pay(69).reason('Money lent of R$ 69')
-//ledger.get('Caixa').to('João Lucas').pay(57).reason('Money lent of R$ 57');
+ledger.get('Caixa').to('Enzo').pay(250).reason('Money lent of R$ 250,00 - R$ 51,00 cuffs');
+ledger.get('Caixa').to('Luísa').pay(50).reason('Money lent of R$ 50 - R$ 5 cuffs');
+ledger.get('Caixa').to('Julia').pay(69).reason('Money lent of R$ 69 - R$19.50 cuffs');
+ledger.get('Caixa').to('João Lucas').pay(57).reason('Money lent of R$ 57 - R$ 8,00 cuffs');
 
 // ----------------- Physical Money Management ------------------------ //
 
@@ -134,9 +132,11 @@ treasure.put('Venda dos sorvetes')
 .type(1).amount(71)
 .type(0.5).amount(72)
 .type(0.25).amount(55)
-.type(0.1).amount(21)
+.type(0.1).amount(22)
 .type(0.05).amount(7)
 .save();
+
+treasure.take('Paying the lents').type(50).amount(4).type(20).amount(6).type(5).amount(3).type(2).amount(4).type(0.5).amount(1).save();
 
 
 export { ledger, treasure }

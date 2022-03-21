@@ -37,13 +37,12 @@ class Ledger {
 
         const finish = { done, reason };
 
-        const receive = $ => ( amount = $, operation = 'receive', finish);
         const donate = $ => ( amount = $, operation = 'donate', finish);
         const lend = $ => ( amount = $, operation = 'lend', finish);
         const pay = $ => ( amount = $, operation = 'pay', finish);
 
         const start = { to };
-        const actions = { receive, donate, lend, pay };
+        const actions = { donate, lend, pay };
 
         function to(...names) {
             targets = names;
@@ -85,21 +84,9 @@ class Ledger {
 
         const start = { to };
         const finish = { done, reason };
-        const actions = { receive, donate, lend, pay } ;
+        const actions = { donate, lend, pay } ;
 
         // ----------------------------- //
-
-        function receive($) {
-            subject = target;
-            target = name;
-            operation = 'payment';
-            amount = $
-
-            members.get(name).receive($);
-            members.get(target).send($);
-
-            return finish;
-        };
     
         function donate($){
             operation = 'donation';
@@ -287,7 +274,7 @@ class Ledger {
         function close() {
             profit.receipt(receipt);
             profit.product(...receipt.items);
-            ledger.get(member.name).to(profit.name).receive(receipt.total).reason(receipt);
+            ledger.get(profit.name).to(member.name).pay(receipt.total).reason(receipt);
         };
 
         return { get };
@@ -310,7 +297,13 @@ class Ledger {
         const {  members } = this;
         const {  history } = this;
 
-        // Get Cuffs
+        // Cuffs
+        // Lents
+        // Donations
+        // Payments
+        // Items
+        // Entries
+        // Name
 
         const _is = ledger.is.bind(ledger);
         const _get = members.get.bind(members);
@@ -322,8 +315,7 @@ class Ledger {
 
         // -------------------------- //
 
-        const Profile = { entries, fetch, snapshots }
-        const methods = { fetch, identity, snapshots }
+        const Profile = { entries, fetch, snapshots };
 
         function get(name) {
             member = 
@@ -332,18 +324,18 @@ class Ledger {
 
             // ---- After ---- //
 
+            fetchInformation();
+
+            return Profile;
+        };
+
+        function fetchInformation() {
             entries = ledger.fetch.some({ 
 
                 subject: () => member.name,
                 target: () => member.name
 
             });
-
-            return Profile;
-        };
-
-        function identity() {
-
         };
 
         function fetch() {
