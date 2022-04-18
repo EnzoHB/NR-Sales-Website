@@ -1,4 +1,4 @@
-import { names } from "./data.js";
+import Data from "./data.js";
 import { Ledger } from "./core/Ledger.js"
 import { Person } from "./classes/Person.js";
 import { Profit } from "./classes/Profit.js"
@@ -13,15 +13,15 @@ const donation = new Person('Doações');
 const magic = new Profit('Magia');
 
 // Other members 
-const storify = name => new Store(name);
-const profitify = name => new Profit(name);
-const personify = name => new Person(name);
-const treasurify = name => new Treasure(name);
+const storify = ({ name }) => new Store(name);
+const profitify = ({ name }) => new Profit(name);
+const personify = ({ name }) => new Person(name);
+const treasurify = ({ name }) => new Treasure(name);
 
-const treasures = names.treasures.map(treasurify);
-const students = names.students.map(personify);
-const profits = names.profits.map(profitify);
-const stores = names.stores.map(storify);
+const treasures = Data.treasures.map(treasurify);
+const students = Data.inner.map(personify);
+const profits = Data.profits.map(profitify);
+const stores = Data.stores.map(storify);
 
 // Adding to the ledger
 ledger.add(...treasures);
@@ -31,6 +31,5 @@ ledger.add(...students);
 ledger.add(...profits);
 ledger.add(...stores);
 
-const treasure = ledger.members.get('Caixa');
 
-export { ledger, treasure, magic };
+export { ledger, treasures, magic };

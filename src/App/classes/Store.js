@@ -6,26 +6,23 @@ class Store extends Person {
 
         this.balance = Infinity;
         this.sending = false;
+        this.address = null;
         this.catalog = new Map;
         this.receipts = new Map;
-        this.address = null;
     };
 
-    product(...items) {
-        for(const item of items) {
-            this.catalog.set(item.name, 
-            this.catalog.get(item.name) ||
+    receipt(receipt) {
 
-                {
-                    name: item.name,
-                    price: item.price
-                }
-            );
-        };
-    };
+        const { catalog } = this;
+        const { receipts } = this;
 
-    receipt(cart) {
-        this.receipts.set(cart.name, cart.build());
+        receipt.items.forEach(({ name, price, id }) => {
+            catalog.set(name, { name, price, id });
+        });
+
+        receipts.set(receipt.id, receipt);
+
+        return this;
     };
 };
 

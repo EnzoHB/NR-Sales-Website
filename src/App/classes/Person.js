@@ -4,9 +4,9 @@ class Person {
     constructor(name) {
         this.id = nanoid()
         this.name = name;
-        this.phone = null;
-        this.email = null;
-        this.photo = null;
+        // this.phone = null;
+        // this.email = null;
+        // this.photo = null;
         this.balance = 0;
         this.receiving = true;
         this.sending = true;

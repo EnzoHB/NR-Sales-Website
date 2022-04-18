@@ -2,13 +2,16 @@ import { Person } from "../classes/Person.js";
 import { Store } from "../classes/Store.js";
 import { ProfitReceipt, StoreReceipt } from '../classes/helper/Receipt.js';
 import { Profit } from "../classes/Profit.js";
-import { LedgerEntry as Entry} from '../classes/helper/Entry.js'
+import { Profile } from "../classes/helper/Profile.js";
+import { Transaction } from "../classes/helper/Transaction.js";
+import { Funding } from "../classes/helper/Funding.js";
 
 class Ledger {
     constructor(name) {
         this.name = name;
         this.members = new Map;
-        this.history = [];
+        this.pendent = new Map;
+        this.history = [];  
     };
 
     add(...members) {
@@ -25,9 +28,9 @@ class Ledger {
         throw new Error(`${name} is not a instance of ${instance.name}`);
     };
 
-    many(...names) {
-        const that = this;
+    transaction() {
 
+<<<<<<< Updated upstream
         // ------------ //
 
         let description;
@@ -91,205 +94,132 @@ class Ledger {
         function donate($){
             operation = 'donation';
             amount = $
-
-            members.get(name).send($);
-            members.get(target).receive($);
-
-            return finish;
-        };
-
-        function lend($) {
-            operation = 'lent';
-            amount = $
-
-            members.get(name).send($);
-            members.get(target).receive($);
-
-            return finish;
-        };
-
-        function pay($) {
-            operation = 'payment';
-            amount = $
-
-            members.get(name).send($);
-            members.get(target).receive($);
-
-            return finish;
-        };
-
-        function to(name) {
-            isMember(name); 
-            target = name;
-            return actions;
-        };
-
-        function reason(message) {
-            note = message;
-            done();
-        };
-
-        function done() {
-            var entry = new Entry({ subject, operation, target, amount, note });
-
-            history.push(entry);
-        };
-
-        return start;
-    }; 
-
-    get stores() {
-
+=======
         const ledger = this;
+>>>>>>> Stashed changes
 
-        const {  members } = this;
-        const {  history } = this;
+        const { members } = this;
+        const { history } = this;
+        const { pendent } = this;
 
-        const _is = ledger.is.bind(this);
-        const _get = members.get.bind(members);
-
-        // ----------------------- //
-
-        var member;
-        var store;
-        var receipt = new StoreReceipt();
-
-        // ----------------------- //
-
-        function get(name) {
-            store = 
-            _get(name);
-            _is(name, Store); 
-            return { buyer }
+        Transaction.init = transaction => {
+            ledger.pendent.set(transaction.properties.id, transaction);
         };
 
-        function buyer(name) {
-            member = 
-            _get(name);
-            _is(name, Person); 
-            return { cart }
+        Transaction.done = transaction => {
+
+            ledger.is(transaction.subject);
+            ledger.is(transaction.target);
+
+            members.get(transaction.subject).send(transaction.amount);
+            members.get(transaction.target).receive(transaction.amount);
+
+            pendent.delete(transaction.id);
+            history.push(transaction); 
+
+            return ledger;
         };
 
-        function cart(name, note) {
-            receipt.name = name;
-            receipt.note = note;
-
-            return { item }
-        };
-
-        function item(name) {
-            var p;
-
-            const amount = n => (receipt.item(name).price(p).amount(n), { item, pay, tax });
-            const price = $ => (p = $, { amount });
-
-            return { price };
-        };
-
-        function tax($) {
-            receipt.tax = $;
-            return { pay }
-        };
-
-        function pay() {
-            store.receipt(receipt);
-            store.product(...receipt.items);
-            ledger.get(member.name).to(store.name).pay(receipt.total).reason(receipt);
-        };
-
-        return { get };
+        return new Transaction;
     };
 
-    get profit() {
+    funding() {
 
-        const ledger = this;
+        let ledger = this;
 
-        const {  members } = this;
-        const {  history } = this;
-
-        const _is = ledger.is.bind(this);
-        const _get = members.get.bind(members);
-
-        // ----------------------- //
-
-        var member;
-        var profit;
-        var receipt = new ProfitReceipt();
-
-        // ----------------------- //
-
-        function get(name) {
-            profit = 
-            _get(name);
-            _is(name, Profit); 
-            return { seller }
+        Funding.done = instance => {
+            instance.subjects.forEach(subject => {
+                ledger
+                .transaction()
+                    .subject(subject)
+                    .target(instance.target)
+                    .donate(instance.amount)
+                    .note(instance.note)
+                .build();
+            })
         };
 
-        function seller(name) {
-            member = 
-            _get(name);
-            _is(name, Person); 
-            return { sale }
+        return new Funding;
+    };
+
+    stores() {
+
+        let ledger = this;
+
+        StoreReceipt.done = instance => {
+
+            ledger.is(instance.seller, Store);
+            ledger.is(instance.buyer, Person);
+
+            ledger.members.get(instance.seller).receipt(instance);
+            ledger
+            
+            .transaction()
+            
+            .store(instance)
+
+            .subject(instance.buyer)
+
+            .target(instance.seller)
+
+            .pay(instance.total)
+
+            .note(instance.note)
+
+            .build();
         };
 
-        function sale(name, note) {
-            receipt.name = name;
-            receipt.note = note;
+        return new StoreReceipt;
+    };
 
-            return { item }
-        };
+    profits() {
 
-        function item(name) {
-            var refs = {};
+        let ledger = this;
 
-            function price($) {
-                refs.price = $;
-                return { amount };
-            };
+        ProfitReceipt.done = instance => {
 
-            function amount(n) {
-                receipt.item(name).price(refs.price).amount(n);
-                return { item, cuff, close };
-            };
+            ledger.is(instance.seller, Person);
+            ledger.is(instance.provider, Profit);
 
-            function cuff(buyer) {
-                var refs = {};
+            ledger.members.get(instance.provider).receipt(instance);
+            ledger
+            
+            .transaction()
+            
+            .profit(instance)
 
-                function amount($) {
-                    refs.amount = $;
-                    return { payed }
-                };
+            .subject(instance.provider)
 
-                function payed(p) {
-                    receipt.cuff(name).from(buyer).amount(refs.amount).payed(p);
-                    return { cuff, item, close };
-                };
+            .target(instance.seller)
 
-                return { amount };
-            };
+            .pay(instance.total)
 
-            return { price };
-        };
+            .note(instance.note)
 
+<<<<<<< Updated upstream
         function close() {
             profit.receipt(receipt);
             profit.product(...receipt.items);
             ledger.get(profit.name).to(member.name).pay(receipt.total).reason(receipt);
+=======
+            .build();
+>>>>>>> Stashed changes
         };
 
-        return { get };
+        return new ProfitReceipt;
     };
 
-    get fetch() {
+    fetch(entries = this.history) {
     
-        var some  = props => this.history.filter(entry => Object.entries(props).some (([key, filter]) => entry[key] === filter(entry, key)))
-        var every = props => this.history.filter(entry => Object.entries(props).every(([key, filter]) => entry[key] === filter(entry, key)))
+        var some  = props => entries.filter(entry => Object.entries(props).some (([key, filter]) => filter(entry[key], key, entry)));
+        var every = props => entries.filter(entry => Object.entries(props).every(([key, filter]) => filter(entry[key], key, entry)));
 
         return {
             some,
             every
         }
     };
+<<<<<<< Updated upstream
 
     get profile() {
         const ledger = this;
@@ -371,6 +301,10 @@ class Ledger {
 
         return { get }
     };
+=======
+>>>>>>> Stashed changes
 };
 
+
+// /\.?(\w+)\((()|(.+?))\)/g;
 export { Ledger }

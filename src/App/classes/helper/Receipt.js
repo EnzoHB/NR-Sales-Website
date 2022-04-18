@@ -1,141 +1,145 @@
-import { unstable_composeClasses } from '@mui/material';
+import { Staged } from '../Staged.js';
 import { nanoid } from 'nanoid';
 
-// Store Receipt
-// Profit Receipt
+class Item extends Staged {
+    constructor() {
+        super(Item);
 
+        this.static('id', nanoid());
 
-class Receipt {
-    constructor(name, note) {
-        this.id = nanoid();
-        this.name = name;
-        this.note = note;
-        this.total = 0;
-        this.tax = 0;
-        this.items = [];
-    };
-
-    item(name) {
-        var that = this;
-        var p;
-        var a;
-
-        const amount = n => (a = n, { add }); 
-        const price = $ => (p = $, { amount });
-
-        function add() {
-
-            let price = p;
-            let amount = a;
-
-            that.items.push({ name, price, amount });
-            that.total = that.items.reduce((value, { price, amount }) => value += price * amount, that.tax); 
-
-            return that; 
-        };
-
-        return { price };
-    };
+        this.setter('name', 'Product');
+        this.setter('price', 0);
+        this.setter('amount', 1);
+    }
 };
 
-class StoreReceipt {
-    constructor(name, note) {
-        this.id = nanoid();
-        this.name = name;
-        this.note = note;
-        this.total = 0;
-        this.tax = 0;
-        this.items = [];
+class StoreReceipt extends Staged {
+    constructor() {
+        super(StoreReceipt);
+
+        this.static('id', nanoid());
+        this.static('items', []);
+
+        this.setter('info', 'Some purchase');
+        this.setter('seller', 'Someone');
+        this.setter('buyer', 'Somebody');
+        this.setter('note', '');
+        this.setter('tax', 0);
     };
 
-    item(name) {
-        return {
-            price: price => ({
-                amount: amount => this.items.push({ name, price, amount })
-            })
-        };
-    };
-
-    build() {
-        return (
-            this.total += 
-            this.items.reduce((acc, { price, amount}) => acc += price * amount, this.tax),
+    item() {
+        Item.done = instance => (
+            this?.properties.items.push(instance),
             this
         );
+
+        return new Item;
+    };
+
+    get total() {
+        return this?.items.reduce((accumulator, { price, amount }) => accumulator += price * amount, this.tax);
     };
 };
 
-class ProfitReceipt {
-    constructor(name, note) {
-        this.name = name;
-        this.note = note;
-        this.total = 0;
-        this.sales = 0;
-        this.pendent = 0;
+class Cuff extends Staged {
+    constructor() {
+        super(Cuff);
 
-        this.items = new Map();
-        this.cuffs = new Map();
+        this.static('id', nanoid());
+
+        this.setter('buyer',' Someone');
+        this.setter('item',' Some Item');
+        this.setter('amount',0);
+        this.setter('payed', false);
+    };
+}; 
+
+class ProfitReceipt extends Staged {
+    constructor() {
+        super(ProfitReceipt);
+
+        this.static('id', nanoid());
+        this.static('items', new Map);
+        this.static('cuffs', new Map);
+
+        this.setter('info', 'Some profit');
+        this.setter('seller', 'Someone');
+        this.setter('provider', 'Somebody');
+        this.setter('note', '');
+        this.setter('gross', null)
     };
 
-    item(name) {
-        return {
-            price: price => ({
-                amount: amount => this.items.set(name, { name, price, amount, cuffs: []})
-            })
+    cuff() {
+
+        const { cuffs } = this.properties;
+        const { items } = this.properties;
+
+        Cuff.done = instance => {
+            if (!items.has(instance.item))
+                throw new Error(`${instance.item} not previously defined as an available item`);
+
+                cuffs.set(instance.id, instance);
+
+                return this;
         };
+
+        return new Cuff;
     };
 
-    cuff(name) {
-        return {
-            from: from => ({
-                amount: amount => ({
-                    payed: payed => {
-                        
-                        if (!this.items.has(name))
-                            throw new Error(`${name} was not defined as an available item`);
+    item() {
 
-                            this.items.get(name).cuffs.push({ from, amount, payed });
-                            this.cuffs.set(from, { from, amount, payed, item: name })
-                    }
-                })
-            })
-        };
-    };
-
-    build() {
-
-        var items = Array.from(this.items.values());
-        var cuffs = Array.from(this.cuffs.values());
-
-        this.sales = items.reduce((acc, { price, amount }) => acc += price * amount, 0);
-        this.pendent = cuffs.reduce((acc, cuff) => {
-
-            var { item, amount, payed } = cuff;
-
-            if (payed) 
-                return acc;
-                delete cuff.item;
-
-            var pendent = this.items.get(item).price * amount;
-
-            this.sales -= Number(pendent); 
-            return acc += Number(pendent);
-
-        }, 0);
-
-        delete this.cuffs;
-        
-        return (
-
-            this.items = items,
-
-            this.total = 
-            this.sales +
-            this.pendent,
-
+        Item.done = instance => (
+            this?.properties.items.set(instance.name, instance),
             this
         );
+
+        return new Item;
+    };
+
+    get sales() {
+        if (!this.building)
+        return this.total - this.pendent;
+    };
+
+    get pendent() {
+
+        var { building } = this;
+        var { cuffs } = this;
+        var { items } = this;
+
+        if (building) return;
+
+        var total = 0;
+        var cuffs = cuffs.forEach(({ amount, item }) => total += items.get(item).price * amount);
+
+        return total;
+    };
+
+    get total() {
+        if (this.building) return;
+
+        if (this.gross) 
+            return this.gross;
+            return this.expected;
+    };
+
+    get expected() {
+
+        var { building } = this;
+        var { items } = this;
+
+        if (building) return;
+
+        var total = 0;
+        var items = items.forEach(({ price, amount }) => total += price * amount);
+
+        return total;
+    };
+
+    get deviation() {
+        if (!this.building) 
+        return this.total - this.expected;
     };
 };
 
-export { Receipt, StoreReceipt, ProfitReceipt };
+export { StoreReceipt, ProfitReceipt };

@@ -7,24 +7,21 @@ class Profit extends Person {
         this.balance = Infinity;
         this.receiving = false;
         this.products = new Map;
-        this.sales = new Map;
-    };
-
-    product(...items) {
-        for(const item of items) {
-            this.products.set(item.name, 
-            this.products.get(item.name) ||
-
-                {
-                    name: item.name,
-                    price: item.price
-                }
-            );
-        };
+        this.receipts = new Map;
     };
 
     receipt(receipt) {
-        this.sales.set(receipt.name, receipt.build());
+
+        const { receipts } = this;
+        const { products } = this;
+
+        receipt.items.forEach(({ name, price, id }) => {
+            products.set(name, { name, price, id });
+        });
+
+        receipts.set(receipt.id, receipt);
+
+        return this;
     };
 };
 
